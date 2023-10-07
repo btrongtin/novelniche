@@ -1,8 +1,8 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
 // middlewares
-const { authCheck, adminCheck } = require("../middlewares/auth");
+const { authCheck, adminCheck } = require('../middlewares/auth');
 
 // controller
 const {
@@ -11,14 +11,13 @@ const {
   update,
   remove,
   list,
-} = require("../controllers/category");
+} = require('../controllers/category');
 
 // routes
-// router.post("/category", authCheck, adminCheck, create);
-router.post("/category", create);
-router.get("/categories", list);
-router.get("/category/:slug", read);
-router.put("/category/:slug", authCheck, adminCheck, update);
-router.delete("/category/:slug", authCheck, adminCheck, remove);
+router.post('/category', create);
+router.get('/categories', list);
+router.get('/category/:slug', read);
+router.put('/category/:slug', authCheck, adminCheck, update);
+router.delete('/category/:slug', authCheck, adminCheck, remove);
 
 module.exports = router;
