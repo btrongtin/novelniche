@@ -1,7 +1,7 @@
-import React from "react";
-import StarRating from "react-star-ratings";
+import React from 'react';
+import StarRating from 'react-star-ratings';
 
-export const showAverage = (p) => {
+export const showAverage = (p, align) => {
   if (p && p.ratings) {
     let ratingsArray = p && p.ratings;
     let total = [];
@@ -18,7 +18,7 @@ export const showAverage = (p) => {
     // console.log("result", result);
 
     return (
-      <div className="text-center pt-1 pb-3">
+      <div className={`${align ? align : 'text-center'} pt-1 pb-3`}>
         <span>
           <StarRating
             starDimension="20px"
@@ -26,7 +26,7 @@ export const showAverage = (p) => {
             starRatedColor="red"
             rating={result}
             editing={false}
-          />{" "}
+          />{' '}
           ({p.ratings.length})
         </span>
       </div>

@@ -1,90 +1,136 @@
 .section-title {
-    border-bottom: 1px solid #498374;
+  border-bottom: 1px solid #498374;
 }
 
 .section-title a {
-    display: inline-block;
-    color: #fff !important;
-    font-size: 16px;
-    font-weight: 500;
-    text-transform: uppercase;
-    padding: 15px 30px;
-    transform: skew(10deg);
-    background-color: #498374;
-    webkit-transform: skew(10deg);
-    margin-left: -5px;
+  display: inline-block;
+  color: #fff !important;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 15px 30px;
+  transform: skew(10deg);
+  webkit-transform: skew(10deg);
+  margin-left: -5px;
+}
+
+.section-title-green a {
+  background-color: #498374;
+}
+.section-title-yellow a {
+  background-color: #f7941d;
 }
 
 .sidebar-header {
-    height: 64px;
-    margin-top: 16px;
-    margin-bottom: 24px;
-    padding: 0 20px;
+  height: 64px;
+  margin-top: 16px;
+  margin-bottom: 24px;
+  padding: 0 20px;
 }
 .sidebar-header-logo {
-    width: 80px;
+  width: 80px;
 }
 .css-dip3t8 {
-    overflow: unset !important;
+  overflow: unset !important;
 }
 .ant-pagination-prev,
 .ant-pagination-next,
 .ant-pagination-item {
-    border-radius: 100% !important;
-    height: 43px !important;
-    width: 43px !important;
+  border-radius: 100% !important;
+  height: 43px !important;
+  width: 43px !important;
 }
 .order-card {
-    color: #fff;
+  color: #fff;
 }
 
 .bg-c-blue {
-    background: linear-gradient(45deg, #317cd2, #8ec1fb);
+  background: linear-gradient(45deg, #317cd2, #8ec1fb);
 }
 
 .bg-c-green {
-    background: linear-gradient(45deg, #25ab90, #64e4cb);
+  background: linear-gradient(45deg, #25ab90, #64e4cb);
 }
 
 .bg-c-yellow {
-    background: linear-gradient(45deg, #c68529, #fbcf91);
+  background: linear-gradient(45deg, #c68529, #fbcf91);
 }
 
 .bg-c-pink {
-    background: linear-gradient(45deg, #ce304b, #f997a7);
+  background: linear-gradient(45deg, #ce304b, #f997a7);
 }
 .card-header {
-    background-color: unset;
+  background-color: unset;
 }
 
 .card {
-    border-radius: 5px;
-    -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
-    box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
-    border: none;
-    margin-bottom: 30px;
-    -webkit-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+  box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+  border: none;
+  margin-bottom: 30px;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .card .card-block {
-    padding: 25px;
+  padding: 25px;
 }
 
 .order-card i {
-    font-size: 26px;
+  font-size: 26px;
 }
 .flex-center-between {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .box-img {
-    max-width: 100%;
-    object-fit: cover;
-    object-position: center;
+  max-width: 100%;
+  object-fit: cover;
+  object-position: center;
 }
-.product-img-sm{
-    width: 5rem;
-    height: 7rem;
+.product-img-sm {
+  width: 5rem;
+  height: 7rem;
+}
+.product-details-stamp {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+}
+.pro-details-list ul {
+  list-style: disc outside;
+  padding-left: 20px;
+}
+.pro-details-list ul li {
+  font-size: 20px;
+}
+.pro-details-list ul span {
+  font-size: 14px;
+}
+.pro-details-cart,
+.pro-details-cart a {
+  width: 100%;
+  text-align: center;
+}
+.tab-content {
+  margin-bottom: 60px;
+}
+.nav-tabs .nav-link {
+  padding-inline: 2rem;
+}
+.prod-details-info-list {
+  list-style-type: square;
+  padding-left: 24px;
+}
+.prod-details-info-list li {
+  margin-bottom: 0.8rem;
+}
+/* UTILITIES */
+.text-lg {
+  font-size: 20px !important;
+}
+.text-2xl {
+  font-size: 28px;
 }
