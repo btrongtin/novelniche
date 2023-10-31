@@ -31,7 +31,8 @@ exports.remove = async (req, res) => {
 
 exports.read = async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug })
-    .populate('category')
+    .populate({ path: 'category', select: 'name' })
+    .populate({ path: 'author', select: 'name' })
     .lean();
   console.log('PRODUCT: ', product);
   res.json(product);
