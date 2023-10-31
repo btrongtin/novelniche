@@ -1,7 +1,4 @@
-import {
-    createBrowserRouter,
-    Outlet,
-} from 'react-router-dom';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
 import Home from '../pages/Home';
 import Login from '../pages/auth/Login';
 import AdminRoute from './AdminRoute';
@@ -23,7 +20,7 @@ import CreateCouponPage from '../pages/admin/coupon/CreateCouponPage';
 import Register from '../pages/auth/Register';
 import RegisterComplete from '../pages/auth/RegisterComplete';
 import ForgotPassword from '../pages/auth/ForgotPassword';
-import Product from '../pages/Product';
+import ProductDetail from '../pages/ProductDetail';
 import Shop from '../pages/Shop';
 import Cart from '../pages/Cart';
 import LoadingToRedirect from './LoadingToRedirect';
@@ -39,148 +36,148 @@ import Users from '../pages/admin/user/Users';
 // import AuthProvider from '../context/AuthProvider';
 
 const AuthLayout = () => {
-    // console.log("here");
-    // const location = useLocation();
-    // console.log("LCOATION: ", location);
-    // if (location === "/a") return <Navigate to="/login" />;
-    // return <Outlet />;
-    return (
-        // <AuthProvider>
-            <Outlet />
-        // </AuthProvider>
-    );
+  // console.log("here");
+  // const location = useLocation();
+  // console.log("LCOATION: ", location);
+  // if (location === "/a") return <Navigate to="/login" />;
+  // return <Outlet />;
+  return (
+    // <AuthProvider>
+    <Outlet />
+    // </AuthProvider>
+  );
 };
 
 const router = createBrowserRouter([
-    {
-        element: <AuthLayout />,
-        errorElement: <LoadingToRedirect />,
+  {
+    element: <AuthLayout />,
+    errorElement: <LoadingToRedirect />,
+    children: [
+      {
+        element: <PublicRoute />,
         children: [
-            {
-                element: <PublicRoute />,
-                children: [
-                    {
-                        element: <Home />,
-                        path: '/',
-                    },
-                    {
-                        element: <Login />,
-                        path: '/login',
-                    },
-                    {
-                        element: <Register />,
-                        path: '/register',
-                    },
-                    {
-                        element: <RegisterComplete />,
-                        path: '/register/complete',
-                    },
-                    {
-                        element: <ForgotPassword />,
-                        path: '/forgot/password',
-                    },
-                    {
-                        element: <Product />,
-                        path: '/product/:slug',
-                    },
-                    {
-                        element: <Shop />,
-                        path: '/shop',
-                    },
-                    {
-                        element: <Cart />,
-                        path: '/cart',
-                    },
-                    {
-                        element: <About />,
-                        path: '/about',
-                    },
-                ],
-            },
-            {
-                element: <AdminRoute />,
-                children: [
-                    {
-                        element: <AdminDashboard />,
-                        path: '/admin/dashboard',
-                    },
-                    {
-                        element: <OrderPage />,
-                        path: '/admin/orders',
-                    },
-                    {
-                        element: <OrderDetail />,
-                        path: '/admin/orders/:slug',
-                    },
-                    {
-                        element: <CategoryCreate />,
-                        path: '/admin/category',
-                    },
-                    {
-                        element: <CategoryUpdate />,
-                        path: '/admin/category/:slug',
-                    },
-                    {
-                        element: <AuthorCreate />,
-                        path: '/admin/author',
-                    },
-                    {
-                        element: <AuthorUpdate />,
-                        path: '/admin/author/:slug',
-                    },
-                    {
-                        element: <ProductCreate />,
-                        path: '/admin/product',
-                    },
-                    {
-                        element: <AllProducts />,
-                        path: '/admin/products',
-                    },
-                    {
-                        element: <ProductUpdate />,
-                        path: '/admin/product/:slug',
-                    },
-                    {
-                        element: <CreateCouponPage />,
-                        path: '/admin/coupon',
-                    },
-                    {
-                        element: <Users />,
-                        path: '/admin/users',
-                    },
-                ],
-            },
-            {
-                element: <UserRoute />,
-                children: [
-                    {
-                        element: <History />,
-                        path: '/user/history',
-                    },
-                    {
-                        element: <Password />,
-                        path: '/user/password',
-                    },
-                    {
-                        element: <Wishlist />,
-                        path: '/user/wishlist',
-                    },
-                    {
-                        element: <Checkout />,
-                        path: '/checkout',
-                    },
-                    {
-                        element: <Payment />,
-                        path: '/payment',
-                    },
-                    {
-                        element: <Orderplaced />,
-                        path: '/orderplaced',
-                    },
-                ],
-            },
+          {
+            element: <Home />,
+            path: '/',
+          },
+          {
+            element: <Login />,
+            path: '/login',
+          },
+          {
+            element: <Register />,
+            path: '/register',
+          },
+          {
+            element: <RegisterComplete />,
+            path: '/register/complete',
+          },
+          {
+            element: <ForgotPassword />,
+            path: '/forgot/password',
+          },
+          {
+            element: <ProductDetail />,
+            path: '/product/:slug',
+          },
+          {
+            element: <Shop />,
+            path: '/shop',
+          },
+          {
+            element: <Cart />,
+            path: '/cart',
+          },
+          {
+            element: <About />,
+            path: '/about',
+          },
         ],
-    },
+      },
+      {
+        element: <AdminRoute />,
+        children: [
+          {
+            element: <AdminDashboard />,
+            path: '/admin/dashboard',
+          },
+          {
+            element: <OrderPage />,
+            path: '/admin/orders',
+          },
+          {
+            element: <OrderDetail />,
+            path: '/admin/orders/:slug',
+          },
+          {
+            element: <CategoryCreate />,
+            path: '/admin/category',
+          },
+          {
+            element: <CategoryUpdate />,
+            path: '/admin/category/:slug',
+          },
+          {
+            element: <AuthorCreate />,
+            path: '/admin/author',
+          },
+          {
+            element: <AuthorUpdate />,
+            path: '/admin/author/:slug',
+          },
+          {
+            element: <ProductCreate />,
+            path: '/admin/product',
+          },
+          {
+            element: <AllProducts />,
+            path: '/admin/products',
+          },
+          {
+            element: <ProductUpdate />,
+            path: '/admin/product/:slug',
+          },
+          {
+            element: <CreateCouponPage />,
+            path: '/admin/coupon',
+          },
+          {
+            element: <Users />,
+            path: '/admin/users',
+          },
+        ],
+      },
+      {
+        element: <UserRoute />,
+        children: [
+          {
+            element: <History />,
+            path: '/user/history',
+          },
+          {
+            element: <Password />,
+            path: '/user/password',
+          },
+          {
+            element: <Wishlist />,
+            path: '/user/wishlist',
+          },
+          {
+            element: <Checkout />,
+            path: '/checkout',
+          },
+          {
+            element: <Payment />,
+            path: '/payment',
+          },
+          {
+            element: <Orderplaced />,
+            path: '/orderplaced',
+          },
+        ],
+      },
+    ],
+  },
 ]);
 
-export default router
+export default router;
