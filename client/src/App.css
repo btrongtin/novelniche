@@ -1,7 +1,10 @@
 .section-title {
   border-bottom: 1px solid #498374;
 }
-
+img {
+  width: 100%;
+  object-fit: cover;
+}
 .section-title a {
   display: inline-block;
   color: #fff !important;
@@ -133,4 +136,16 @@
 }
 .text-2xl {
   font-size: 28px;
+}
+.ellipsify {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+}
+.primary-color {
+  color: #498374 !important;
+}
+.product-img img {
+  aspect-ratio: 3/5;
 }
