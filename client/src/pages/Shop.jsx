@@ -7,20 +7,14 @@ import {
 import { getCategories } from '../functions/category';
 import { useSelector, useDispatch } from 'react-redux';
 import ProductCard from '../components/cards/ProductCard';
-import {
-  Menu,
-  Slider,
-  Checkbox,
-  Radio,
-  Pagination,
-  ConfigProvider,
-} from 'antd';
+import { Menu, Slider, Checkbox } from 'antd';
 import {
   DollarOutlined,
   DownSquareOutlined,
   StarOutlined,
 } from '@ant-design/icons';
 import Star from '../components/forms/Star';
+import Pagination from '../components/pagination/Pagination';
 
 const { SubMenu, ItemGroup } = Menu;
 const formatter = (value) => `${value} VND`;
@@ -36,11 +30,11 @@ const Shop = () => {
   const [star, setStar] = useState('');
   const [sub, setSub] = useState('');
   const [shipping, setShipping] = useState('');
-  console.log('AAA: ', products.length);
   let dispatch = useDispatch();
   let { search } = useSelector((state) => ({ ...state }));
   const { text } = search;
   const [page, setPage] = useState(1);
+  const PERPAGE = 12;
 
   useEffect(() => {
     loadAllProducts();
@@ -60,7 +54,7 @@ const Shop = () => {
 
   // 1. load products by default on page load
   const loadAllProducts = () => {
-    getProducts('createdAt', 'desc', page).then((res) => {
+    getProducts('createdAt', 'desc', page, PERPAGE).then((res) => {
       setProducts(res.data);
       setLoading(false);
     });
@@ -295,25 +289,16 @@ const Shop = () => {
           </div>
 
           <div className="pro-pagination-style text-center mt-30 mb-5">
-            <ConfigProvider
-              theme={{
-                token: {
-                  colorPrimary: '#498374',
-                },
-              }}
-            >
-              {products.length < 1 ? (
-                ''
-              ) : (
-                <Pagination
-                  current={page}
-                  defaultCurrent={1}
-                  total={productsCount}
-                  pageSize={12}
-                  onChange={(value) => setPage(value)}
-                />
-              )}
-            </ConfigProvider>
+            {products.length < 1 ? (
+              ''
+            ) : (
+              <Pagination
+                current={page}
+                totalRecord={productsCount}
+                pageSize={PERPAGE}
+                handleClick={(value) => setPage(value)}
+              />
+            )}
           </div>
         </div>
       </div>
