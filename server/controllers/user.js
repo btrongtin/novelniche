@@ -137,15 +137,7 @@ exports.createOrder = async (req, res) => {
     transactionNo,
     responseCode,
   } = req.body.paymentData;
-  console.log(
-    'DATAAAAA: ',
-    amount,
-    bankCode,
-    bankTranNo,
-    cardType,
-    transactionNo,
-    responseCode
-  );
+  const { shippingAddress } = req.body;
   const user = await User.findOne({ email: req.user.email }).lean();
 
   let { products, coupon } = await Cart.findOne({ orderedBy: user._id }).lean();
@@ -168,7 +160,7 @@ exports.createOrder = async (req, res) => {
       },
     },
     orderedBy: user._id,
-    coupon,
+    address: shippingAddress || user.address,
   }).save();
 
   // decrement quantity, increment sold
@@ -229,7 +221,7 @@ exports.removeFromWishlist = async (req, res) => {
 };
 
 exports.createCashOrder = async (req, res) => {
-  const { COD, couponApplied } = req.body;
+  const { COD, couponApplied, shippingAddress } = req.body;
   // if COD is true, create order with status of Cash On Delivery
 
   if (!COD) return res.status(400).send('Create cash order failed');
@@ -248,6 +240,7 @@ exports.createCashOrder = async (req, res) => {
 
   let newOrder = await new Order({
     products: userCart.products,
+    address: shippingAddress || user.address,
     coupon: userCart.coupon,
     paymentIntent: {
       id: uniqueid(),

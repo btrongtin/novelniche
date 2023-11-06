@@ -55,6 +55,10 @@ const ProductCard = ({ product, spaceBottomClass }) => {
         type: 'SET_VISIBLE',
         payload: true,
       });
+      addToast('Added To Cart', {
+        appearance: 'success',
+        autoDismiss: true,
+      });
     }
   };
 

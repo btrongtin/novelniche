@@ -17,7 +17,11 @@ const Orders = ({ orders, handleStatusChange }) => {
       </td>
       <td>{moment(order.createdAt).format('DD MMM YYYY - h:mm:ss a')}</td>
       <td>{order.orderedBy.name}</td>
-      <td dangerouslySetInnerHTML={{ __html: order.orderedBy.address }}></td>
+      <td
+        dangerouslySetInnerHTML={{
+          __html: order.address || order.orderedBy.address,
+        }}
+      ></td>
       <td>{order.paymentIntent.amount}</td>
       <td>{mapBadgeColor(order.paymentIntent.status)}</td>
       <td>

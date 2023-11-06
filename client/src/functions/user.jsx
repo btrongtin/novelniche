@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const userCart = async (cart, authtoken) =>
   await axios.post(
@@ -47,10 +47,10 @@ export const applyCoupon = async (authtoken, coupon) =>
     }
   );
 
-export const createOrder = async (paymentData, authtoken) =>
+export const createOrder = async (paymentData, shippingAddress, authtoken) =>
   await axios.post(
     `${import.meta.env.VITE_REACT_APP_API}/user/order`,
-    { paymentData },
+    { paymentData, shippingAddress },
     {
       headers: {
         authtoken,
@@ -97,11 +97,12 @@ export const addToWishlist = async (productId, authtoken) =>
 export const createCashOrderForUser = async (
   authtoken,
   COD,
-  couponTrueOrFalse
+  couponTrueOrFalse,
+  shippingAddress
 ) =>
   await axios.post(
     `${import.meta.env.VITE_REACT_APP_API}/user/cash-order`,
-    { couponApplied: couponTrueOrFalse, COD },
+    { couponApplied: couponTrueOrFalse, COD, shippingAddress },
     {
       headers: {
         authtoken,
@@ -109,20 +110,20 @@ export const createCashOrderForUser = async (
     }
   );
 
-  export const getUsersCount = async (authtoken) =>
+export const getUsersCount = async (authtoken) =>
   await axios.get(`${import.meta.env.VITE_REACT_APP_API}/admin/users/total`, {
-      headers: {
-          authtoken,
-      },
+    headers: {
+      authtoken,
+    },
   });
 
-  export const getUsers = async (authtoken, sort, order, page, perPage) =>
-    await axios.post(
-        `${import.meta.env.VITE_REACT_APP_API}/admin/users`,
-        { sort, order, page, perPage },
-        {
-            headers: {
-                authtoken,
-            },
-        }
-    );
+export const getUsers = async (authtoken, sort, order, page, perPage) =>
+  await axios.post(
+    `${import.meta.env.VITE_REACT_APP_API}/admin/users`,
+    { sort, order, page, perPage },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
