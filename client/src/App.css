@@ -1,3 +1,6 @@
+*:root {
+  --primary-color: #498374;
+}
 .section-title {
   border-bottom: 1px solid #498374;
 }
@@ -146,6 +149,69 @@ img {
 .primary-color {
   color: #498374 !important;
 }
+.background-primary {
+  background-color: #498374 !important;
+}
 .product-img img {
   aspect-ratio: 3/5;
+}
+.text-bold {
+  font-weight: 600;
+}
+.order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.prod-price-sm {
+  color: #498374;
+  font-size: 20px;
+  font-weight: 500;
+}
+.flex-middle {
+  display: flex;
+  align-items: center;
+}
+.text-sm {
+  font-size: 1rem;
+}
+.prod-coupon {
+  display: inline-block;
+  border: 1px dashed #000;
+  padding: 0.2rem 2rem;
+  position: relative;
+  font-weight: bold;
+  background: #ffc107;
+  border-radius: 1rem 0 0 1rem;
+}
+.prod-coupon-scissors {
+  position: absolute;
+  top: -12px;
+  right: 0;
+}
+.order-time {
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.54);
+}
+.product-wishlist-img {
+  max-width: 100%;
+  width: 7rem;
+}
+.btn-add-to-cart {
+  color: #fff;
+  background-color: var(--primary-color);
+  text-align: center;
+  padding: 0.5rem 0.7rem;
+  font-size: 12px;
+  cursor: pointer;
+}
+.btn-add-to-cart:hover,
+.btn-remove-from-cart:hover {
+  opacity: 0.8;
+}
+.btn-remove-from-cart {
+  font-size: 12px;
+  text-align: right;
+  padding: 0.5rem 0.7rem;
+  cursor: pointer;
 }

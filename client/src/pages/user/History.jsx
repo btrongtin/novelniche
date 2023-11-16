@@ -3,6 +3,7 @@ import { getUserOrders } from '../../functions/user';
 import { useSelector } from 'react-redux';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import Invoice from '../../components/order/Invoice';
+import { numberWithCommas } from '../../utils';
 
 const History = () => {
   const [orders, setOrders] = useState([]);
@@ -20,16 +21,26 @@ const History = () => {
 
   const showOrderInTable = (order) => (
     <>
-      <p>
-        Order ID: <b>{order._id}</b>
-      </p>
-      <table className="table table-bordered">
+      <div className="order-header mb-3">
+        <div className="">
+          <span>
+            Mã đơn hàng: <b>{order._id}</b>
+          </span>
+          <br />
+          <span className="order-time">Ngày đặt: 20/02/2023</span>
+        </div>
+
+        <span className="order-status badge badge-success p-2">
+          {order.orderStatus}
+        </span>
+      </div>
+      <table className="table">
         <thead className="thead-light">
           <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Price</th>
-            <th scope="col">Count</th>
-            <th scope="col">Amount</th>
+            <th scope="col">Tên sách</th>
+            <th scope="col">Đơn giá</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Thành tiền</th>
           </tr>
         </thead>
 
@@ -39,9 +50,9 @@ const History = () => {
               <td>
                 <b>{p.product?.title || 'Sample book'}</b>
               </td>
-              <td>{p.product?.price || '250000'}</td>
+              <td>{numberWithCommas(p.product?.price) || '250.000'}</td>
               <td>{p.count}</td>
-              <td>{p.count * p.product?.price}</td>
+              <td>{numberWithCommas(p.count * p.product?.price)}</td>
             </tr>
           ))}
         </tbody>
@@ -55,7 +66,7 @@ const History = () => {
       fileName="invoice.pdf"
       className="btn btn-sm btn-block btn-outline-primary"
     >
-      Download PDF
+      Tải xuống PDF
     </PDFDownloadLink>
   );
 
@@ -63,16 +74,39 @@ const History = () => {
     orders.reverse().map((order, i) => (
       <div key={i} className="m-5 p-3 card" style={{ width: '100%' }}>
         {showOrderInTable(order)}
-        <div className="row">
+        {order.coupon && (
+          <div className="ml-auto mb-2">
+            <div className="prod-coupon">
+              <span className="prod-coupon-scissors">✂</span>
+              <span className="prod-coupon-code">{order.coupon}%</span>
+            </div>
+          </div>
+        )}
+        <div className="ml-auto mt-2 mb-3 d-flex align-items-center">
+          <span className="mr-2">Tổng cộng: </span>
+          <span className="prod-price-sm">
+            {numberWithCommas(order.paymentIntent?.amount || 0)} VNĐ
+          </span>
+        </div>
+        {/* <div className="row">
           <div className="col">{showDownloadLink(order)}</div>
+        </div> */}
+        <hr />
+        <h5>Thông tin giao hàng</h5>
+        <div className="shipping-info">
+          <ul style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
+            <li>Người nhận: Bùi Trọng Tín</li>
+            <li>Địa chỉ: 96 Lê hồng phong, phú lợi, tdm, bình dương</li>
+            <li>Số điện thoại: 0828582484</li>
+          </ul>
         </div>
       </div>
     ));
 
   return (
     <div style={{ minHeight: 'calc(100vh - 210px)', width: '100%' }}>
-      <h4 className="mt-4">
-        {orders.length > 0 ? 'User orders' : 'No orders'}
+      <h4 className="mt-4 text-bold">
+        {orders.length > 0 ? 'Đơn hàng của bạn' : 'Bạn chưa có đơn hàng nào'}
       </h4>
       <div className="row" style={{ width: '100%' }}>
         {orders && showEachOrders()}

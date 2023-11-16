@@ -12,6 +12,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router-dom';
 import { createPaymentOrder } from '../functions/vnpay';
+import { numberWithCommas } from '../utils';
 
 const Checkout = () => {
   const [products, setProducts] = useState([]);
@@ -103,8 +104,11 @@ const Checkout = () => {
   const showAddress = () => (
     <>
       <ReactQuill theme="snow" value={address} onChange={setAddress} />
-      <button className="btn btn-primary mt-2" onClick={saveAddressToDb}>
-        Save
+      <button
+        className="btn btn-primary background-primary mt-2"
+        onClick={saveAddressToDb}
+      >
+        Lưu
       </button>
     </>
   );
@@ -130,8 +134,11 @@ const Checkout = () => {
         type="text"
         className="form-control"
       />
-      <button onClick={applyDiscountCoupon} className="btn btn-primary mt-2">
-        Apply
+      <button
+        onClick={applyDiscountCoupon}
+        className="btn btn-primary background-primary mt-2"
+      >
+        Áp dụng
       </button>
     </>
   );
@@ -172,65 +179,64 @@ const Checkout = () => {
 
   return (
     <div className="container">
-      <div className="row pt-3">
+      <div className="row pt-3 mt-3">
         <div className="col-md-6">
-          <h4>Delivery Address</h4>
+          <h4>Thông tin giao hàng</h4>
           <br />
           {showAddress()}
           <hr />
-          <h4>Got Coupon?</h4>
-          <br />
+          <h4>Mã giảm giá</h4>
           {showApplyCoupon()}
           <br />
           {discountError && <p className="bg-danger p-2">{discountError}</p>}
         </div>
 
         <div className="col-md-6">
-          <h4>Order Summary</h4>
+          <h4>Thông tin đơn hàng</h4>
           <hr />
-          <p>Products {products.length}</p>
+          <p>{products.length} sản phẩm </p>
           <hr />
           {showProductSummary()}
           <hr />
           <p>
-            Cart Total: <b>{total}</b>
+            Tổng cộng: <b>{numberWithCommas(total)} VNĐ</b>
           </p>
 
           {totalAfterDiscount > 0 && (
             <p className="bg-success py-2 px-3 text-white rounded-lg">
-              Discount Applied: Total Payable: $<b>{totalAfterDiscount}</b>
+              Áp dụng thành công: Thành tiền mới:{' '}
+              <b>{numberWithCommas(totalAfterDiscount)} VNĐ</b>
             </p>
           )}
 
           <div className="row">
             <div className="col-md-6">
-              {COD ? (
-                <button
-                  className="btn btn-primary"
-                  disabled={!addressSaved || !products.length}
-                  onClick={createCashOrder}
-                >
-                  Place Order
-                </button>
-              ) : (
-                <button
-                  className="btn btn-primary"
-                  disabled={!addressSaved || !products.length}
-                  onClick={handleOnlinePayment}
-                >
-                  Place Order
-                </button>
-              )}
-            </div>
-
-            <div className="col-md-6">
               <button
                 disabled={!products.length}
                 onClick={emptyCart}
-                className="btn btn-primary"
+                className="btn btn-secondary"
               >
-                Empty Cart
+                Xóa giỏ hàng
               </button>
+            </div>
+            <div className="col-md-6">
+              {COD ? (
+                <button
+                  className="btn btn-primary background-primary"
+                  disabled={!addressSaved || !products.length}
+                  onClick={createCashOrder}
+                >
+                  Đặt hàng
+                </button>
+              ) : (
+                <button
+                  className="btn btn-primary background-primary"
+                  disabled={!addressSaved || !products.length}
+                  onClick={handleOnlinePayment}
+                >
+                  Đặt hàng
+                </button>
+              )}
             </div>
           </div>
         </div>

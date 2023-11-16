@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema;
 
 const productSchema = new mongoose.Schema(
@@ -30,11 +30,11 @@ const productSchema = new mongoose.Schema(
     },
     category: {
       type: ObjectId,
-      ref: "Category",
+      ref: 'Category',
     },
     author: {
       type: ObjectId,
-      ref: "Author",
+      ref: 'Author',
     },
     quantity: Number,
     sold: {
@@ -44,18 +44,14 @@ const productSchema = new mongoose.Schema(
     images: {
       type: Array,
     },
-    shipping: {
-      type: String,
-      enum: ["Yes", "No"],
-    },
     ratings: [
       {
         star: Number,
-        postedBy: { type: ObjectId, ref: "User" },
+        postedBy: { type: ObjectId, ref: 'User' },
       },
     ],
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Product", productSchema);
+module.exports = mongoose.model('Product', productSchema);

@@ -1,13 +1,14 @@
-import React from "react";
-import ModalImage from "react-modal-image";
-import laptop from "../../images/laptop.png";
-import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import React from 'react';
+import ModalImage from 'react-modal-image';
+import laptop from '../../images/laptop.png';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   CloseOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons';
+import { numberWithCommas } from '../../utils';
 
 const ProductCardInCheckout = ({ p }) => {
   let dispatch = useDispatch();
@@ -23,9 +24,9 @@ const ProductCardInCheckout = ({ p }) => {
 
     let cart = [];
 
-    if (typeof window !== "undefined") {
-      if (localStorage.getItem("cart")) {
-        cart = JSON.parse(localStorage.getItem("cart"));
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('cart')) {
+        cart = JSON.parse(localStorage.getItem('cart'));
       }
 
       cart.map((product, i) => {
@@ -34,9 +35,9 @@ const ProductCardInCheckout = ({ p }) => {
         }
       });
 
-      localStorage.setItem("cart", JSON.stringify(cart));
+      localStorage.setItem('cart', JSON.stringify(cart));
       dispatch({
-        type: "ADD_TO_CART",
+        type: 'ADD_TO_CART',
         payload: cart,
       });
     }
@@ -46,9 +47,9 @@ const ProductCardInCheckout = ({ p }) => {
     // console.log(p._id, "to remove");
     let cart = [];
 
-    if (typeof window !== "undefined") {
-      if (localStorage.getItem("cart")) {
-        cart = JSON.parse(localStorage.getItem("cart"));
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('cart')) {
+        cart = JSON.parse(localStorage.getItem('cart'));
       }
       // [1,2,3,4,5]
       cart.map((product, i) => {
@@ -57,51 +58,40 @@ const ProductCardInCheckout = ({ p }) => {
         }
       });
 
-      localStorage.setItem("cart", JSON.stringify(cart));
+      localStorage.setItem('cart', JSON.stringify(cart));
       dispatch({
-        type: "ADD_TO_CART",
+        type: 'ADD_TO_CART',
         payload: cart,
       });
     }
   };
 
   return (
-    <tbody>
-      <tr>
-        <td>
-          <div style={{ width: "100px", height: "auto" }}>
-            {p.images.length ? (
-              <ModalImage small={p.images[0].url} large={p.images[0].url} />
-            ) : (
-              <ModalImage small={laptop} large={laptop} />
-            )}
-          </div>
-        </td>
-        <td>{p.title}</td>
-        <td>{p.price} VND</td>
-        <td className="text-center">
-          <input
-            type="number"
-            className="form-control"
-            value={p.count}
-            onChange={handleQuantityChange}
-          />
-        </td>
-        <td className="text-center">
-          {p.shipping === "Yes" ? (
-            <CheckCircleOutlined className="text-success" />
+    <tr>
+      <td>
+        <div style={{ width: '100px', height: 'auto' }}>
+          {p.images.length ? (
+            <ModalImage small={p.images[0].url} large={p.images[0].url} />
           ) : (
-            <CloseCircleOutlined className="text-danger" />
+            <ModalImage small={laptop} large={laptop} />
           )}
-        </td>
-        <td className="text-center">
-          <CloseOutlined
-            onClick={handleRemove}
-            className="text-danger pointer"
-          />
-        </td>
-      </tr>
-    </tbody>
+        </div>
+      </td>
+      <td>{p.title}</td>
+      <td>{p.price} VND</td>
+      <td className="text-center">
+        <input
+          type="number"
+          className="form-control"
+          value={p.count}
+          onChange={handleQuantityChange}
+        />
+      </td>
+      <td className="text-center">{numberWithCommas(p.price * p.count)} đ</td>
+      <td className="text-center">
+        <CloseOutlined onClick={handleRemove} className="text-danger pointer" />
+      </td>
+    </tr>
   );
 };
 
