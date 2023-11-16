@@ -22,6 +22,7 @@ import RegisterComplete from '../pages/auth/RegisterComplete';
 import ForgotPassword from '../pages/auth/ForgotPassword';
 import ProductDetail from '../pages/ProductDetail';
 import Shop from '../pages/Shop';
+import AboutUs from '../pages/AboutUs';
 import Cart from '../pages/Cart';
 import LoadingToRedirect from './LoadingToRedirect';
 import OrderPage from '../pages/admin/order/OdersPage';
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
           {
             element: <Shop />,
             path: '/shop',
+          },
+          {
+            element: <AboutUs />,
+            path: '/aboutus',
           },
           {
             element: <Cart />,

@@ -14,10 +14,13 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
       <nav>
         <ul>
           <li>
-            <Link to={'/'}>Home</Link>
+            <Link to={'/'}>Trang Chủ</Link>
           </li>
           <li>
-            <Link to={'/shop'}>Shop</Link>
+            <Link to={'/shop'}>Cửa Hàng</Link>
+          </li>
+          <li>
+            <Link to={'/aboutus'}>Giới Thiệu</Link>
           </li>
         </ul>
       </nav>
