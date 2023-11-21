@@ -57,6 +57,11 @@ exports.orderById = async (req, res) => {
   res.json(order);
 };
 
+exports.getOrderById = async (orderId) => {
+  let order = await Order.findById(orderId).populate('products.product').lean();
+  return order;
+};
+
 exports.orderStatus = async (req, res) => {
   const { orderId, orderStatus } = req.body;
   try {

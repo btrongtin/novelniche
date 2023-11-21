@@ -65,10 +65,11 @@ const Orderplaced = () => {
   return (
     <div className="container" style={{ height: 'calc(100vh - 210px)' }}>
       <div className="text-center">
-        <h1 className="mt-5 mb-4">THANK YOU.</h1>
+        <h1 className="mt-5 mb-4">CẢM ƠN BẠN.</h1>
         <p style={{ fontSize: '16px' }}>
-          Your order has been placed and is being processed. Your order id is
-          <b> {orderId}</b>. You will receive an email with the order details.
+          Đơn hàng của bạn đã được đặt thành công, mã đơn hàng của bạn là
+          <b> {orderId}</b>. Bạn sẽ nhận được email thông báo về chi tiết đơn
+          hàng.
         </p>
         <Link to="/" className="mt-4 btn btn-outline-success">
           Back to homepage
