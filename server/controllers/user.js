@@ -4,6 +4,9 @@ const Cart = require('../models/cart');
 const Coupon = require('../models/coupon');
 const Order = require('../models/order');
 const uniqueid = require('uniqueid');
+const { sendMail } = require('../utils/mailer/mailer');
+const { receipt } = require('../utils/mailer/mail.template');
+const { getOrderById } = require('./admin');
 
 exports.userCart = async (req, res) => {
   // console.log(req.body); // {cart: []}
@@ -160,6 +163,7 @@ exports.createOrder = async (req, res) => {
     },
     orderedBy: user._id,
     address: shippingAddress || user.address,
+    coupon: coupon,
   }).save();
 
   // decrement quantity, increment sold
@@ -174,6 +178,13 @@ exports.createOrder = async (req, res) => {
 
   let updated = await Product.bulkWrite(bulkOption, {});
   console.log('PRODUCT QUANTITY-- AND SOLD++', updated);
+  const orderForMail = await getOrderById(newOrder._id);
+  // Send email
+  sendMail(
+    user.email,
+    '[NovelNiche] - Đặt hàng thành công',
+    receipt(user, orderForMail)
+  );
 
   res.json({ ok: true, orderId: newOrder._id });
 };
@@ -267,6 +278,13 @@ exports.createCashOrder = async (req, res) => {
   console.log('PRODUCT QUANTITY-- AND SOLD++', updated);
 
   console.log('NEW ORDER SAVED', newOrder);
+  const orderForMail = await getOrderById(newOrder._id);
+  // Send email
+  sendMail(
+    user.email,
+    '[NovelNiche] - Đặt hàng thành công',
+    receipt(user, orderForMail)
+  );
   res.json({ ok: true });
 };
 
