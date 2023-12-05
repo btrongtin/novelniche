@@ -88,7 +88,7 @@ const IconGroup = ({ iconWhiteClass }) => {
           </button>
           <div className="account-dropdown">
             <ul>
-              {user.role === 'subscriber' && (
+              {user.role === 'guest' && (
                 <>
                   <li>
                     <Link to={'/user/history'}>Đơn đặt hàng</Link>
@@ -98,19 +98,20 @@ const IconGroup = ({ iconWhiteClass }) => {
                   </li>
                 </>
               )}
-              {user.role === 'admin' && (
-                <>
-                  <li>
-                    <Link to={'/admin/dashboard'}>Quản lý</Link>
-                  </li>
-                  <li>
-                    <Link to={'/user/history'}>Đơn đặt hàng</Link>
-                  </li>
-                  <li>
-                    <Link to={'/user/wishlist'}>Yêu thích</Link>
-                  </li>
-                </>
-              )}
+              {user.role === 'admin' ||
+                (user.role === 'clerk' && (
+                  <>
+                    <li>
+                      <Link to={'/admin/dashboard'}>Quản lý</Link>
+                    </li>
+                    <li>
+                      <Link to={'/user/history'}>Đơn đặt hàng</Link>
+                    </li>
+                    <li>
+                      <Link to={'/user/wishlist'}>Yêu thích</Link>
+                    </li>
+                  </>
+                ))}
               <li>
                 <Link onClick={handleLogout}>Đăng xuất</Link>
               </li>

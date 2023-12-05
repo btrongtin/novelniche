@@ -7,6 +7,8 @@ const uniqueid = require('uniqueid');
 const { sendMail } = require('../utils/mailer/mailer');
 const { receipt } = require('../utils/mailer/mail.template');
 const { getOrderById } = require('./admin');
+const admin = require('../firebase');
+const mongoose = require('mongoose');
 
 exports.userCart = async (req, res) => {
   // console.log(req.body); // {cart: []}
@@ -65,6 +67,72 @@ exports.getUserCart = async (req, res) => {
 
   const { products, cartTotal, totalAfterDiscount } = cart;
   res.json({ products, cartTotal, totalAfterDiscount, user });
+};
+
+exports.getUser = async (req, res) => {
+  try {
+    const userDb = await User.findById(req.params.userId).lean();
+    const { displayName, photoURL, metadata } = await admin
+      .auth()
+      .getUserByEmail(userDb.email);
+
+    const ordersByUser = await Order.find({ orderedBy: req.params.userId });
+
+    const ordersTotalValue = ordersByUser.reduce(
+      (accu, current) => accu + (+current.paymentIntent?.amount || 0),
+      0
+    );
+    const ordersTotalProd = await getDistinctOrdersByUser(req.params.userId);
+    const orderTotalProdCount = ordersTotalProd.reduce(
+      (accu, curr) => accu + (curr.count || 0),
+      0
+    );
+    const result = {
+      ...userDb,
+      displayName,
+      photoURL,
+      metadata,
+      ordersTotalValue,
+      orderTotalProdCount,
+      ordersCount: ordersByUser.length || 0,
+      orders: ordersByUser,
+    };
+    res.json(result);
+  } catch (err) {
+    console.log('err: ', err);
+  }
+};
+const getDistinctOrdersByUser = async (userId) => {
+  try {
+    const orders = await Order.find({ orderedBy: userId })
+      .select('products')
+      .populate('products.product', 'title');
+
+    const distinctProducts = [];
+    const productMap = new Map();
+
+    orders.forEach((order) => {
+      order.products.forEach((product) => {
+        const productId = product.product._id.toString();
+
+        if (!productMap.has(productId)) {
+          productMap.set(productId, {
+            product: product.product,
+            count: product.count,
+          });
+        } else {
+          productMap.get(productId).count += product.count;
+        }
+      });
+    });
+
+    productMap.forEach((value) => {
+      distinctProducts.push(value);
+    });
+    return distinctProducts;
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 exports.emptyCart = async (req, res) => {
@@ -294,7 +362,25 @@ exports.allUsers = async (req, res) => {
     const currentPage = page || 1;
     const limit = perPage || 12; // 3
 
-    const users = await User.find({})
+    const users = await User.find({ role: 'guest' })
+      .skip((currentPage - 1) * perPage)
+      .sort([[sort, order]])
+      .limit(limit)
+      .lean();
+
+    res.json(users);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.allEmployees = async (req, res) => {
+  try {
+    const { sort, order, page, perPage } = req.body;
+    const currentPage = page || 1;
+    const limit = perPage || 12; // 3
+
+    const users = await User.find({ role: { $ne: 'guest' } })
       .skip((currentPage - 1) * perPage)
       .sort([[sort, order]])
       .limit(limit)

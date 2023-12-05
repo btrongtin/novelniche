@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import { numberWithCommas } from '../../utils';
 
 const Orders = ({ orders, handleStatusChange }) => {
   const mapBadgeColor = (status) => {
@@ -22,7 +23,7 @@ const Orders = ({ orders, handleStatusChange }) => {
           __html: order.address || order.orderedBy.address,
         }}
       ></td>
-      <td>{order.paymentIntent.amount}</td>
+      <td>{numberWithCommas(order.paymentIntent.amount || 0)}</td>
       <td>{mapBadgeColor(order.paymentIntent.status)}</td>
       <td>
         <select

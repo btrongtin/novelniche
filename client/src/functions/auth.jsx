@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const createOrUpdateUser = async (authtoken) => {
   return await axios.post(
@@ -28,6 +28,18 @@ export const currentAdmin = async (authtoken) => {
   return await axios.post(
     `${import.meta.env.VITE_REACT_APP_API}/current-admin`,
     {},
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};
+
+export const createNewEmployee = async (authtoken, newEmployee) => {
+  return await axios.post(
+    `${import.meta.env.VITE_REACT_APP_API}/createNewUser`,
+    { newEmployee },
     {
       headers: {
         authtoken,

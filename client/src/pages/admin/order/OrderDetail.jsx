@@ -9,22 +9,26 @@ import { toast } from 'react-toastify';
 import Orders from '../../../components/order/Orders';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
+import LoadingCard from '../../../components/cards/LoadingCard';
 
 const OrderPage = () => {
-  const [order, setOrder] = useState([]);
+  const [order, setOrder] = useState({});
   const { user } = useSelector((state) => ({ ...state }));
   const { slug } = useParams();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     loadOrder();
-  }, []);
+  }, [slug]);
 
-  const loadOrder = () =>
+  const loadOrder = () => {
+    setLoading(true);
     getOrderById(user.token, slug).then((res) => {
-      // console.log(JSON.stringify(res.data, null, 4));
       console.log('DATAAA: ', res.data);
       setOrder(res.data);
+      setLoading(false);
     });
+  };
 
   const handleStatusChange = (orderId, orderStatus) => {
     changeStatus(orderId, orderStatus, user.token).then(() => {
@@ -38,7 +42,9 @@ const OrderPage = () => {
       <h4>Orders detail</h4>
       {/* {JSON.stringify(orders)} */}
       {/* <Orders orders={orders} handleStatusChange={handleStatusChange} /> */}
-      {order && (
+      {loading ? (
+        <LoadingCard count={3} />
+      ) : (
         <>
           <div
             className="p-4 bg-white rounded-lg shadow"

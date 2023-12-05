@@ -6,7 +6,7 @@ const TopCardHolder = ({ data }) => {
   const topCardData = [
     {
       id: '1',
-      bgClass: 'bg-c-blue',
+      bgClass: 'bg-order',
       title: 'Orders Received',
       iconClass: 'fa fa-cart-plus',
       footer: 'Completed orders',
@@ -15,7 +15,7 @@ const TopCardHolder = ({ data }) => {
     },
     {
       id: '2',
-      bgClass: 'bg-c-green',
+      bgClass: 'bg-customer',
       title: 'Total Customer',
       iconClass: 'fa fa-regular fa-user',
       footer: 'New users',
@@ -24,7 +24,7 @@ const TopCardHolder = ({ data }) => {
     },
     {
       id: '3',
-      bgClass: 'bg-c-yellow',
+      bgClass: 'bg-product',
       title: 'Total Products',
       iconClass: 'fa fa-solid fa-book',
       footer: 'New products',
@@ -33,7 +33,7 @@ const TopCardHolder = ({ data }) => {
     },
     {
       id: '4',
-      bgClass: 'bg-c-pink',
+      bgClass: 'bg-income',
       title: 'Income this month',
       iconClass: 'fa fa-money',
       footer: 'Purchased orders',

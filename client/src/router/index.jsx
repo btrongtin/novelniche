@@ -31,6 +31,8 @@ import About from '../pages/About';
 import Payment from '../pages/Payment';
 import Orderplaced from '../pages/Orderplaced';
 import Users from '../pages/admin/user/Users';
+import Sellers from '../pages/admin/seller/Sellers';
+import UserDetail from '../pages/admin/user/UserDetail';
 // import Payment from '../pages/Payment';
 
 // import Login from '../pages/auth/Login';
@@ -149,6 +151,14 @@ const router = createBrowserRouter([
           {
             element: <Users />,
             path: '/admin/users',
+          },
+          {
+            element: <UserDetail />,
+            path: '/admin/users/:userId',
+          },
+          {
+            element: <Sellers />,
+            path: '/admin/sellers',
           },
         ],
       },
