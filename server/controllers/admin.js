@@ -77,6 +77,21 @@ exports.orderStatus = async (req, res) => {
   }
 };
 
+exports.changeRole = async (req, res) => {
+  const { employeeId, role } = req.body;
+  try {
+    let updated = await User.findByIdAndUpdate(
+      employeeId,
+      { role },
+      { new: true }
+    ).lean();
+
+    res.json({ success: true, updated });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 exports.getDashboard = async (req, res) => {
   const date = new Date();
   const month = date.getMonth();

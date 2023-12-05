@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { getAuth } from "firebase/auth";
-import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { createOrUpdateUser } from "../../functions/auth";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { getAuth } from 'firebase/auth';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { createOrUpdateUser } from '../../functions/auth';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterComplete = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const auth = getAuth();
 
   // const { user } = useSelector((state) => ({ ...state }));
@@ -15,7 +15,7 @@ const RegisterComplete = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setEmail(window.localStorage.getItem("emailForRegistration"));
+    setEmail(window.localStorage.getItem('emailForRegistration'));
     // console.log(window.location.href);
     // console.log(window.localStorage.getItem("emailForRegistration"));
   }, []);
@@ -24,12 +24,12 @@ const RegisterComplete = () => {
     e.preventDefault();
     // validation
     if (!email || !password) {
-      toast.error("Email and password is required");
+      toast.error('Email and password is required');
       return;
     }
 
     if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long");
+      toast.error('Password must be at least 6 characters long');
       return;
     }
 
@@ -38,21 +38,21 @@ const RegisterComplete = () => {
         email,
         window.location.href
       );
-      //   console.log("RESULT", result);
+      console.log('RESULT', result);
       if (result.user.emailVerified) {
         // remove user email fom local storage
-        window.localStorage.removeItem("emailForRegistration");
+        window.localStorage.removeItem('emailForRegistration');
         // get user id token
         let user = auth.currentUser;
         await user.updatePassword(password);
         const idTokenResult = await user.getIdTokenResult();
         // redux store
-        console.log("user", user, "idTokenResult", idTokenResult);
+        console.log('user', user, 'idTokenResult', idTokenResult);
 
         createOrUpdateUser(idTokenResult.token)
           .then((res) => {
             dispatch({
-              type: "LOGGED_IN_USER",
+              type: 'LOGGED_IN_USER',
               payload: {
                 name: res.data.name,
                 email: res.data.email,
@@ -65,7 +65,7 @@ const RegisterComplete = () => {
           .catch((err) => console.log(err));
 
         // redirect
-        navigate("/");
+        navigate('/');
       }
     } catch (error) {
       console.log(error);
@@ -82,22 +82,34 @@ const RegisterComplete = () => {
         className="form-control"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
+        placeholder="Nhập mật khẩu"
         autoFocus
       />
       <br />
-      <button type="submit" className="btn btn-raised">
-        Complete Registration
-      </button>
+      <div className="button-box">
+        <button type="submit" className="btn w-100">
+          Hoàn tất đăng ký
+        </button>
+      </div>
     </form>
   );
 
   return (
-    <div className="container p-5">
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
-          <h4>Register Complete</h4>
-          {completeRegistrationForm()}
+    <div className="login-register-area pt-60 pb-100">
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-7 col-md-12 ml-auto mr-auto">
+            <div className="login-register-wrapper">
+              <h4 className="page-title text-center mb-4">
+                Đăng ký thành công
+              </h4>
+              <div className="login-form-container">
+                <div className="login-register-form">
+                  {completeRegistrationForm()}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

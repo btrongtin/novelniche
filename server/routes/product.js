@@ -16,13 +16,14 @@ const {
   listRelated,
   searchFilters,
 } = require('../controllers/product');
+const { CLERK_WEIGHT } = require('../utils/const');
 
 // routes
 router.post('/product', create);
 router.get('/products/total', productsCount);
-router.delete('/product/:slug', authCheck, adminCheck, remove);
+router.delete('/product/:slug', authCheck, [adminCheck(CLERK_WEIGHT)], remove);
 router.get('/product/:slug', read);
-router.put('/product/:slug', authCheck, adminCheck, update);
+router.put('/product/:slug', authCheck, [adminCheck(CLERK_WEIGHT)], update);
 
 router.post('/products', list);
 // rating

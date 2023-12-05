@@ -127,3 +127,24 @@ export const getUsers = async (authtoken, sort, order, page, perPage) =>
       },
     }
   );
+
+export const getEmployees = async (authtoken, sort, order, page, perPage) =>
+  await axios.post(
+    `${import.meta.env.VITE_REACT_APP_API}/admin/employees`,
+    { sort, order, page, perPage },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+
+export const getUserDetail = async (userId, authtoken) =>
+  await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API}/admin/users/${userId}`,
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
