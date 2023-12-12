@@ -20,7 +20,6 @@ const AdminDashboard = () => {
   const loadDashboard = () => {
     setLoading(true);
     getDashboard(user.token).then((res) => {
-      console.log(JSON.stringify(res.data, null, 4));
       setDashboardData(res.data);
       setLoading(false);
     });
@@ -63,7 +62,7 @@ const AdminDashboard = () => {
                                 {product.title}
                               </span>
                               <span className="text-secondary">
-                                {product.author.name}
+                                {product.author?.name || ''}
                               </span>
                             </div>
                           </div>

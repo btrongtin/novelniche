@@ -31,7 +31,7 @@ const OrderPage = () => {
 
   const loadOrders = () =>
     getOrders(user.token, 'aaa', 'bbb', page, PAGE_SIZE).then((res) => {
-      console.log(JSON.stringify(res.data, null, 4));
+      console.log(res.data);
       setOrders(res.data);
     });
 
@@ -54,7 +54,7 @@ const OrderPage = () => {
       <h4>Orders</h4>
       <div className="my-3 d-flex align-items-center">
         <div className="overflow-hidden">
-          <span>From</span>
+          <span>Từ ngày</span>
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
@@ -64,7 +64,7 @@ const OrderPage = () => {
           />
         </div>
         <div className="overflow-hidden ml-3">
-          <span>To</span>
+          <span>Đến ngày</span>
           <DatePicker
             selected={endDate}
             onChange={(date) => setEndDate(date)}
@@ -74,10 +74,9 @@ const OrderPage = () => {
           />
         </div>
         <button className="btn btn-info ml-4" onClick={handleOrdersFilter}>
-          Filter
+          Lọc
         </button>
       </div>
-      {/* {JSON.stringify(orders)} */}
       <Orders orders={orders} handleStatusChange={handleStatusChange} />
 
       <div className="pro-pagination-style text-center mt-30 mb-5">

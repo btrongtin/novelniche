@@ -51,12 +51,12 @@ const Orders = ({ orders, handleStatusChange }) => {
             <thead className="thead-light">
               <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Date</th>
-                <th scope="col">Customer</th>
-                <th scope="col">Address</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Payment status</th>
-                <th scope="col">Delivery status</th>
+                <th scope="col">Ngày đặt</th>
+                <th scope="col">Khách hàng</th>
+                <th scope="col">Địa chỉ</th>
+                <th scope="col">Tổng tiền</th>
+                <th scope="col">Trạng thái thanh toán</th>
+                <th scope="col">Trạng thái giao hàng</th>
               </tr>
             </thead>
             <tbody>{orders.map((order) => showOrderInTable(order))}</tbody>

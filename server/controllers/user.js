@@ -318,7 +318,7 @@ exports.createCashOrder = async (req, res) => {
 
   let newOrder = await new Order({
     products: userCart.products,
-    address: shippingAddress || user.address,
+    address: shippingAddress || user.address || '',
     coupon: userCart.coupon,
     paymentIntent: {
       id: uniqueid(),
