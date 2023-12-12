@@ -10,6 +10,7 @@ import Orders from '../../../components/order/Orders';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import LoadingCard from '../../../components/cards/LoadingCard';
+import { numberWithCommas } from '../../../utils';
 
 const OrderPage = () => {
   const [order, setOrder] = useState({});
@@ -39,9 +40,7 @@ const OrderPage = () => {
 
   return (
     <>
-      <h4>Orders detail</h4>
-      {/* {JSON.stringify(orders)} */}
-      {/* <Orders orders={orders} handleStatusChange={handleStatusChange} /> */}
+      <h4 className="text-bold">Chi Tiết Đơn Hàng</h4>
       {loading ? (
         <LoadingCard count={3} />
       ) : (
@@ -54,7 +53,7 @@ const OrderPage = () => {
               <div className="col-lg-4 col-md-4">
                 <form>
                   <div className="form-group">
-                    <label className="font-weight-bold">Order date</label>
+                    <label className="font-weight-bold">Ngày đặt</label>
                     <p>
                       {moment(order.createdAt).format(
                         'DD MMM YYYY - h:mm:ss a'
@@ -62,11 +61,11 @@ const OrderPage = () => {
                     </p>
                   </div>
                   <div className="form-group">
-                    <label className="font-weight-bold">Ordered by</label>
-                    <p>{order.orderedBy?.name}</p>
+                    <label className="font-weight-bold">Khách hàng</label>
+                    <p>{order.orderedBy?.name || ''}</p>
                   </div>
                   <div className="form-group">
-                    <label className="font-weight-bold">Address</label>
+                    <label className="font-weight-bold">Địa chỉ</label>
                     <p
                       dangerouslySetInnerHTML={{
                         __html:
@@ -82,7 +81,7 @@ const OrderPage = () => {
                 <form>
                   <div className="form-group">
                     <label htmlFor="inputAddress" className="font-weight-bold">
-                      Order status
+                      Trạng thái vận chuyển
                     </label>
                     <select
                       onChange={(e) =>
@@ -105,24 +104,30 @@ const OrderPage = () => {
                     </select>
                   </div>
                   <div className="form-group">
-                    <label className="font-weight-bold">Order type</label>
-                    <p>{order.paymentIntent?.payment_method_types[0]}</p>
+                    <label className="font-weight-bold">
+                      Loại hình thanh toán
+                    </label>
+                    <p>{order.paymentIntent?.payment_method_types[0] || ''}</p>
                   </div>
                 </form>
               </div>
               <div className="col-lg-4 col-md-4">
                 <form>
                   <div className="form-group">
-                    <label className="font-weight-bold">Payment status</label>
+                    <label className="font-weight-bold">
+                      Trạng thái thanh toán
+                    </label>
                     <p>{order.paymentIntent?.status}</p>
                   </div>
                   <div className="form-group">
-                    <label className="font-weight-bold">Coupon</label>
+                    <label className="font-weight-bold">Mã giảm giá</label>
                     <p>{order.coupon ? order.coupon + '%' : 0}</p>
                   </div>
                   <div className="form-group">
-                    <label className="font-weight-bold">Total</label>
-                    <p>{order.paymentIntent?.amount}</p>
+                    <label className="font-weight-bold">Tổng tiền</label>
+                    <p>
+                      {numberWithCommas(order.paymentIntent?.amount) || 0} VNĐ
+                    </p>
                   </div>
                 </form>
               </div>
@@ -132,10 +137,10 @@ const OrderPage = () => {
             <thead className="thead-light">
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">Count</th>
-                <th scope="col">Amount</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Đơn giá</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Thành tiền</th>
               </tr>
             </thead>
 
@@ -145,16 +150,19 @@ const OrderPage = () => {
                   <tr key={product._id}>
                     <td>{index + 1}</td>
                     <td>{product.product?.title}</td>
-                    <td>{product.product?.price}</td>
+                    <td>{numberWithCommas(product.product?.price || 0)} đ</td>
                     <td>{product.count}</td>
-                    <td>{product.product?.price * product.count}</td>
+                    <td>
+                      {numberWithCommas(product.product?.price * product.count)}{' '}
+                      đ
+                    </td>
                   </tr>
                 ))}
             </tbody>
           </table>
           <div className="ml-auto" style={{ width: '18rem' }}>
             <div className="d-flex align-item-center justify-content-between">
-              <span className="font-weight-bold">Total</span>
+              <span className="font-weight-bold">Tổng tiền</span>
               <span>
                 {order.products?.reduce(
                   (accumulator, product) =>
@@ -165,12 +173,14 @@ const OrderPage = () => {
               </span>
             </div>
             <div className="d-flex align-item-center justify-content-between">
-              <span className="font-weight-bold">Coupon</span>
+              <span className="font-weight-bold">Mã giảm giá</span>
               <span>{order.coupon ? order.coupon + '%' : 0}</span>
             </div>
             <div className="d-flex align-item-center justify-content-between">
-              <span className="font-weight-bold">Total Payable</span>
-              <span>{order.paymentIntent?.amount} VND</span>
+              <span className="font-weight-bold">Thành tiền cuối</span>
+              <span>
+                {numberWithCommas(order.paymentIntent?.amount) || 0} VND
+              </span>
             </div>
           </div>
         </>

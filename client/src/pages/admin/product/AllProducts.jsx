@@ -59,7 +59,7 @@ const AllProducts = () => {
       {loading ? (
         <h4 className="text-danger">Loading...</h4>
       ) : (
-        <h4>All Products</h4>
+        <h4 className="text-bold">Tất cả sản phẩm</h4>
       )}
       <div className="row mt-5">
         <Link
@@ -67,7 +67,7 @@ const AllProducts = () => {
           className="btn btn-primary mb-3 mr-3"
           style={{ marginLeft: 'auto' }}
         >
-          Create new
+          Tạo mới
         </Link>
       </div>
       <table className="table table-striped ">

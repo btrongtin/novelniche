@@ -25,7 +25,7 @@ import Shop from '../pages/Shop';
 import AboutUs from '../pages/AboutUs';
 import Cart from '../pages/Cart';
 import LoadingToRedirect from './LoadingToRedirect';
-import OrderPage from '../pages/admin/order/OdersPage';
+import OrderPage from '../pages/admin/order/OrdersPage';
 import OrderDetail from '../pages/admin/order/OrderDetail';
 import About from '../pages/About';
 import Payment from '../pages/Payment';
