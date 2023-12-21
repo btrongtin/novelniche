@@ -6,7 +6,7 @@ const { authCheck, adminCheck } = require('../middlewares/auth');
 
 // controller
 const { create, remove, list } = require('../controllers/coupon');
-const { CLERK_WEIGHT } = require('../utils/const');
+const { CLERK_WEIGHT, ADMIN_WEIGHT } = require('../utils/const');
 
 // routes
 router.post('/coupon', authCheck, [adminCheck(CLERK_WEIGHT)], create);
@@ -14,7 +14,7 @@ router.get('/coupons', list);
 router.delete(
   '/coupon/:couponId',
   authCheck,
-  [adminCheck(CLERK_WEIGHT)],
+  [adminCheck(ADMIN_WEIGHT)],
   remove
 );
 

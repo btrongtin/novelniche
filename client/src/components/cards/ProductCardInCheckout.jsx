@@ -9,6 +9,7 @@ import {
   CloseOutlined,
 } from '@ant-design/icons';
 import { numberWithCommas } from '../../utils';
+import { Link } from 'react-router-dom';
 
 const ProductCardInCheckout = ({ p }) => {
   let dispatch = useDispatch();
@@ -77,7 +78,9 @@ const ProductCardInCheckout = ({ p }) => {
           )}
         </div>
       </td>
-      <td>{p.title}</td>
+      <td>
+        <Link to={`/product/${p.slug}`}>{p.title}</Link>
+      </td>
       <td>{p.price} VND</td>
       <td className="text-center">
         <input
@@ -87,7 +90,9 @@ const ProductCardInCheckout = ({ p }) => {
           onChange={handleQuantityChange}
         />
       </td>
-      <td className="text-center">{numberWithCommas(p.price * p.count)} đ</td>
+      <td className="text-center">
+        {numberWithCommas(p.price * p.count || 0)} đ
+      </td>
       <td className="text-center">
         <CloseOutlined onClick={handleRemove} className="text-danger pointer" />
       </td>

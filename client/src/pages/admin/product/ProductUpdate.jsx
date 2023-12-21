@@ -90,25 +90,12 @@ const ProductUpdate = () => {
 
   const handleCategoryChange = (e) => {
     e.preventDefault();
-    console.log('CLICKED CATEGORY', e.target.value);
     setValues({ ...values, subs: [] });
-
     setSelectedCategory(e.target.value);
-
-    console.log('EXISTING CATEGORY values.category', values.category);
-
-    // if user clicks back to the original category
-    // show its sub categories in default
-    // if (values.category._id === e.target.value) {
-    //     loadProduct();
-    // }
   };
   const handleAuthorChange = (e) => {
     e.preventDefault();
-    console.log('CLICKED Author', e.target.value);
     setValues({ ...values, author: e.target.value });
-
-    console.log('EXISTING AUTHOR values.author', values.author);
   };
 
   const {

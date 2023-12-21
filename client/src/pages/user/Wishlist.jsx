@@ -90,7 +90,7 @@ const Wishlist = () => {
                 <div className="col-md-8 col-lg-8" style={{ fontSize: '16px' }}>
                   <Link to={`/product/${p.slug}`}>{p.title}</Link>
                   <p className="prod-price-sm text-sm mt-2">
-                    {numberWithCommas(p.price)} VND
+                    {numberWithCommas(p.price || 0)} VND
                   </p>
                 </div>
                 <div className="col-md-2 col-lg-2">
@@ -113,58 +113,6 @@ const Wishlist = () => {
               </div>
             ))}
           </div>
-
-          {/* <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">Image</th>
-                <th scope="col">Name</th>
-                <th scope="col">Price</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {wishlist.map((p) => (
-                <tr key={p._id}>
-                  <td>
-                    <Link to={`/product/${p.slug}`} key={p._id}>
-                      <div className="" style={{ width: '120px' }}>
-                        <img
-                          src={p.images[0].url}
-                          style={{
-                            maxWidth: '100%',
-                          }}
-                          alt=""
-                        />
-                      </div>
-                    </Link>
-                  </td>
-                  <td className="align-middle">
-                    <Link to={`/product/${p.slug}`} key={p._id}>
-                      {p.title}
-                    </Link>
-                  </td>
-                  <td className="align-middle">{p.price} VND</td>
-                  <td className="align-middle">
-                    <div className="d-flex justify-content-end">
-                      <div
-                        className="btn btn-success btn-sm"
-                        onClick={() => handleAddToCart(p)}
-                      >
-                        Add to cart
-                      </div>
-                      <div
-                        className="btn btn-danger btn-sm"
-                        onClick={() => handleRemove(p._id)}
-                      >
-                        Remove
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table> */}
         </>
       )}
     </div>

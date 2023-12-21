@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema;
 
 const couponSchema = new mongoose.Schema(
@@ -8,9 +8,9 @@ const couponSchema = new mongoose.Schema(
       trim: true,
       unique: true,
       uppercase: true,
-      required: "Nmae is required",
-      minlength: [6, "Too short"],
-      maxlength: [12, "Too long"],
+      required: 'Nmae is required',
+      minlength: [6, 'Too short'],
+      maxlength: [20, 'Too long'],
     },
     expiry: {
       type: Date,
@@ -20,8 +20,23 @@ const couponSchema = new mongoose.Schema(
       type: Number,
       requred: true,
     },
+    type: {
+      type: String,
+      enum: ['all', 'category', 'product'],
+      default: 'all',
+    },
+    affectedCategory: {
+      type: ObjectId,
+      ref: 'Category',
+      default: null,
+    },
+    target: [{ type: ObjectId, ref: 'Product' }],
+    description: {
+      type: String,
+      default: '',
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Coupon", couponSchema);
+module.exports = mongoose.model('Coupon', couponSchema);

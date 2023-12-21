@@ -126,7 +126,7 @@ const OrderPage = () => {
                   <div className="form-group">
                     <label className="font-weight-bold">Tổng tiền</label>
                     <p>
-                      {numberWithCommas(order.paymentIntent?.amount) || 0} VNĐ
+                      {numberWithCommas(order.paymentIntent?.amount || 0)} VNĐ
                     </p>
                   </div>
                 </form>
@@ -179,7 +179,7 @@ const OrderPage = () => {
             <div className="d-flex align-item-center justify-content-between">
               <span className="font-weight-bold">Thành tiền cuối</span>
               <span>
-                {numberWithCommas(order.paymentIntent?.amount) || 0} VND
+                {numberWithCommas(order.paymentIntent?.amount || 0)} VND
               </span>
             </div>
           </div>

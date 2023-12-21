@@ -10,6 +10,7 @@ import { getEmployees, getUsers, getUsersCount } from '../../../functions/user';
 import { Link } from 'react-router-dom';
 import { createNewEmployee } from '../../../functions/auth';
 import { changeRole } from '../../../functions/admin';
+import { BsFillTrash3Fill } from 'react-icons/bs';
 
 const Sellers = () => {
   const PAGE_SIZE = 6;
@@ -64,6 +65,11 @@ const Sellers = () => {
           <option value="clerk">Nhân viên</option>
         </select>
       </td>
+      <td>
+        <BsFillTrash3Fill
+          style={{ fontSize: '16px', color: 'red', cursor: 'pointer' }}
+        />
+      </td>
     </tr>
   );
 
@@ -93,6 +99,7 @@ const Sellers = () => {
                 <th scope="col">Email</th>
                 <th scope="col">Địa chỉ</th>
                 <th scope="col">Quyền</th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>

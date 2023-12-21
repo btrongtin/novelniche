@@ -296,3 +296,6 @@ img {
 .bg-faded {
   color: #6c757d;
 }
+.w-100 > .react-datepicker-wrapper {
+  width: 100% !important;
+}

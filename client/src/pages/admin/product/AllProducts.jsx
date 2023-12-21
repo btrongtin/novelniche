@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { ConfigProvider, Pagination } from 'antd';
 import { Link } from 'react-router-dom';
+import ProductFilter from '../../../components/product/ProductFilter';
 
 const AllProducts = () => {
   const PAGE_SIZE = 8;
@@ -70,6 +71,7 @@ const AllProducts = () => {
           Tạo mới
         </Link>
       </div>
+      <ProductFilter />
       <table className="table table-striped ">
         <thead>
           <tr>
