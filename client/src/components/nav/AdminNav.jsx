@@ -109,44 +109,44 @@ const AdminNav = () => {
                 component={<NavLink to="/admin/orders" />}
                 icon={<BsCardChecklist />}
               >
-                Orders
+                Đơn Hàng
               </MenuItem>
               <MenuItem
                 component={<NavLink to="/admin/users" />}
                 icon={<BsFillPersonFill />}
               >
-                Users
+                Khách Hàng
               </MenuItem>
               <MenuItem
                 component={<NavLink to="/admin/sellers" />}
                 icon={<BsFileEarmarkPerson />}
                 disabled={user.role !== 'admin'}
               >
-                Sellers
+                Nhân Viên
               </MenuItem>
               <MenuItem
                 component={<NavLink to="/admin/products" />}
                 icon={<BsFillBookFill />}
               >
-                Products
+                Sản Phẩm
               </MenuItem>
               <MenuItem
                 component={<NavLink to="/admin/category" />}
                 icon={<BsMenuButtonWide />}
               >
-                Category
+                Danh Mục
               </MenuItem>
               <MenuItem
                 component={<NavLink to="/admin/author" />}
                 icon={<BsPersonCircle />}
               >
-                Author
+                Tác Giả
               </MenuItem>
               <MenuItem
                 component={<NavLink to="/admin/coupon" />}
                 icon={<BsFillTicketPerforatedFill />}
               >
-                Coupon
+                Mã Giảm Giá
               </MenuItem>
               {/* <MenuItem
                                 component={<NavLink to="/user/password" />}

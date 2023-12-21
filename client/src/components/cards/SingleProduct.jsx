@@ -58,14 +58,17 @@ const SingleProduct = ({ product, onStarClick, star }) => {
         type: 'SET_VISIBLE',
         payload: true,
       });
-      addToast('Added To Cart', { appearance: 'success', autoDismiss: true });
+      addToast('Thêm giỏ hàng thành công', {
+        appearance: 'success',
+        autoDismiss: true,
+      });
     }
   };
 
   const handleAddToWishlist = (e) => {
     e.preventDefault();
     addToWishlist(product._id, user.token).then((res) => {
-      addToast('Added To Wishlist', {
+      addToast('Thêm wishlist thành công', {
         appearance: 'success',
         autoDismiss: true,
       });
@@ -104,7 +107,7 @@ const SingleProduct = ({ product, onStarClick, star }) => {
                 {product && product.ratings && product.ratings.length > 0 ? (
                   showAverage(product, 'text-align-left')
                 ) : (
-                  <div className="pt-1 pb-3">No rating yet</div>
+                  <div className="pt-1 pb-3">Chưa có đánh giá</div>
                 )}
                 <div className="product-details-price">
                   <SectionTitle
@@ -146,12 +149,13 @@ const SingleProduct = ({ product, onStarClick, star }) => {
                 </div>
                 <div className="pro-details-quality">
                   <div className="pro-details-cart btn-hover">
-                    <a
+                    <button
+                      style={{ width: '100%' }}
                       onClick={handleAddToCart}
                       disabled={product.quantity < 1}
                     >
-                      {product.quantity < 1 ? 'Out of Stock' : 'Add To Cart'}
-                    </a>
+                      {product.quantity < 1 ? 'Hết hàng' : 'Thêm'}
+                    </button>
                   </div>
                 </div>
                 <div className="pro-details-quality d-flex align-items-center justify-content-around">
@@ -186,66 +190,6 @@ const SingleProduct = ({ product, onStarClick, star }) => {
             </div>
           </div>
         </div>
-      </div>
-    </>
-  );
-
-  return (
-    <>
-      <div className="col-md-7">
-        {images && images.length ? (
-          <Carousel showArrows={true} autoPlay infiniteLoop>
-            {images && images.map((i) => <img src={i.url} key={i.public_id} />)}
-          </Carousel>
-        ) : (
-          <Card cover={<img src={Laptop} className="mb-3 card-image" />}></Card>
-        )}
-
-        <Tabs type="card">
-          <TabPane tab="Description" key="1">
-            {description && description}
-          </TabPane>
-          <TabPane tab="More" key="2">
-            Call use on xxxx xxx xxx to learn more about this product.
-          </TabPane>
-        </Tabs>
-      </div>
-
-      <div className="col-md-5">
-        <h1 className="bg-info p-3">{title}</h1>
-
-        {product && product.ratings && product.ratings.length > 0 ? (
-          showAverage(product)
-        ) : (
-          <div className="text-center pt-1 pb-3">No rating yet</div>
-        )}
-
-        <Card
-          actions={[
-            <Tooltip placement="top" title={tooltip}>
-              <a onClick={handleAddToCart} disabled={product.quantity < 1}>
-                <ShoppingCartOutlined className="text-danger" />
-                <br />
-                {product.quantity < 1 ? 'Out of Stock' : 'Add To Cart'}
-              </a>
-            </Tooltip>,
-            <a onClick={handleAddToWishlist}>
-              <HeartOutlined className="text-info" /> <br /> Add to Wishlist
-            </a>,
-            <RatingModal>
-              <StarRating
-                name={_id}
-                numberOfStars={5}
-                rating={star}
-                changeRating={onStarClick}
-                isSelectable={true}
-                starRatedColor="red"
-              />
-            </RatingModal>,
-          ]}
-        >
-          <ProductListItems product={product} />
-        </Card>
       </div>
     </>
   );

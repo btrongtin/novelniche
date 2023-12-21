@@ -5,14 +5,7 @@ const Category = require('../models/category');
 
 exports.orders = async (req, res) => {
   try {
-    const {
-      sort = '-createdAt',
-      order,
-      page,
-      perPage,
-      startDate,
-      endDate,
-    } = req.body;
+    const { order = 'asc', page, perPage, startDate, endDate } = req.body;
     const currentPage = page || 1;
     const limit = perPage || 12; //
     let allOrders = [];
@@ -24,7 +17,7 @@ exports.orders = async (req, res) => {
         },
       })
         .skip((currentPage - 1) * perPage)
-        .sort(sort)
+        .sort({ createdAt: -1 })
         .populate('products.product')
         .populate('orderedBy')
         .limit(limit)
@@ -32,7 +25,7 @@ exports.orders = async (req, res) => {
     } else {
       allOrders = await Order.find({})
         .skip((currentPage - 1) * perPage)
-        .sort(sort)
+        .sort({ createdAt: -1 })
         .populate('products.product')
         .populate('orderedBy')
         .limit(limit)

@@ -28,7 +28,12 @@ export const updateProduct = async (slug, product, authtoken) =>
     }
   );
 
-export const getProducts = async (sort, order, page, perPage) =>
+export const getProducts = async (
+  sort = 'title',
+  order = 'asc',
+  page,
+  perPage
+) =>
   await axios.post(`${import.meta.env.VITE_REACT_APP_API}/products`, {
     sort,
     order,

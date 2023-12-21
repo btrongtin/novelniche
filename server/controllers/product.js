@@ -66,13 +66,17 @@ exports.list = async (req, res) => {
     const currentPage = page || 1;
     const limit = perPage || 12; // 3
 
-    const products = await Product.find({})
+    let query = Product.find({})
       .skip((currentPage - 1) * perPage)
       .populate({ path: 'category', select: 'name' })
       .populate({ path: 'author', select: 'name' })
-      .sort([[sort, order]])
-      .limit(limit)
-      .lean();
+      .sort([[sort, order]]);
+
+    if (limit !== -1) {
+      query = query.limit(limit);
+    }
+
+    const products = await query.lean();
 
     res.json(products);
   } catch (err) {

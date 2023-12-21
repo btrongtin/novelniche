@@ -51,7 +51,7 @@ const OrderPage = () => {
 
   return (
     <>
-      <h4>Orders</h4>
+      <h4>Đơn Hàng</h4>
       <div className="my-3 d-flex align-items-center">
         <div className="overflow-hidden">
           <span>Từ ngày</span>

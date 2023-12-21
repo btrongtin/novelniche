@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import {
-  getUserCart,
-  emptyUserCart,
-  saveUserAddress,
-  applyCoupon,
-  createCashOrderForUser,
-  createOrder,
-} from '../functions/user';
+import { emptyUserCart, createOrder } from '../functions/user';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { createPaymentOrder } from '../functions/vnpay';
 

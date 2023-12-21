@@ -62,7 +62,7 @@ const UserDetail = () => {
         </Link>
       </td>
       <td>{moment(order.createdAt).format('DD MMM YYYY - h:mm:ss a')}</td>
-      <td>{numberWithCommas(order.paymentIntent.amount)}</td>
+      <td>{numberWithCommas(order.paymentIntent.amount || 0)}</td>
       <td>
         <select
           onChange={(e) => handleStatusChange(order._id, e.target.value)}

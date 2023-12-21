@@ -79,6 +79,15 @@ const ProductCreateForm = ({
                   editor={ClassicEditor}
                   data={description}
                   onChange={handleDescriptionChange}
+                  onReady={(editor) => {
+                    editor.editing.view.change((writer) => {
+                      writer.setStyle(
+                        'min-height',
+                        '200px',
+                        editor.editing.view.document.getRoot()
+                      );
+                    });
+                  }}
                 />
               </div>
             </div>

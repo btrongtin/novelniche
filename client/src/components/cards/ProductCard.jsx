@@ -55,7 +55,7 @@ const ProductCard = ({ product, spaceBottomClass }) => {
         type: 'SET_VISIBLE',
         payload: true,
       });
-      addToast('Added To Cart', {
+      addToast('Thêm vào giỏ hàng thành công', {
         appearance: 'success',
         autoDismiss: true,
       });
@@ -65,14 +65,14 @@ const ProductCard = ({ product, spaceBottomClass }) => {
   const handleAddToWishlist = (e) => {
     e.preventDefault();
     if (!user) {
-      addToast('Please login to save wishlist', {
+      addToast('Hãy đăng nhập để thêm vào wishlist', {
         appearance: 'error',
         autoDismiss: true,
       });
       return;
     }
     addToWishlist(product._id, user.token).then((res) => {
-      addToast('Added To Wishlist', {
+      addToast('Thêm vào wishlist thành công', {
         appearance: 'success',
         autoDismiss: true,
       });
@@ -86,7 +86,7 @@ const ProductCard = ({ product, spaceBottomClass }) => {
       {product && product.ratings && product.ratings.length > 0 ? (
         showAverage(product)
       ) : (
-        <div className="text-center pt-1 pb-3">No rating yet</div>
+        <div className="text-center pt-1 pb-3">Chưa có đánh giá</div>
       )}
 
       <div
@@ -129,7 +129,7 @@ const ProductCard = ({ product, spaceBottomClass }) => {
                   onClick={handleAddToCart}
                   className="active"
                 >
-                  {product.quantity < 1 ? 'Out of stock' : 'Add to Cart'}
+                  {product.quantity < 1 ? 'Hết hàng' : 'Thêm'}
                 </button>
               }
             </div>
@@ -145,46 +145,13 @@ const ProductCard = ({ product, spaceBottomClass }) => {
             <Link to={`/product/${slug}`}>{title}</Link>
           </h3>
           <div className="product-price">
-            <span className="primary-color">{numberWithCommas(price)} VND</span>
+            <span className="primary-color">
+              {numberWithCommas(price || 0)} VND
+            </span>
           </div>
         </div>
       </div>
     </div>
-  );
-  return (
-    <>
-      {product && product.ratings && product.ratings.length > 0 ? (
-        showAverage(product)
-      ) : (
-        <div className="text-center pt-1 pb-3">No rating yet</div>
-      )}
-
-      <Card
-        cover={
-          <img
-            src={images && images.length ? images[0].url : laptop}
-            style={{ height: '150px', objectFit: 'cover' }}
-            className="p-1"
-          />
-        }
-        actions={[
-          <Link to={`/product/${slug}`}>
-            <EyeOutlined className="text-warning" /> <br /> View Product
-          </Link>,
-          <Tooltip title={tooltip}>
-            <a onClick={handleAddToCart} disabled={product.quantity < 1}>
-              <ShoppingCartOutlined className="text-danger" /> <br />
-              {product.quantity < 1 ? 'Out of stock' : 'Add to Cart'}
-            </a>
-          </Tooltip>,
-        ]}
-      >
-        <Meta
-          title={`${title} - $${price}`}
-          description={`${description && description.substring(0, 40)}...`}
-        />
-      </Card>
-    </>
   );
 };
 
