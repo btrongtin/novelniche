@@ -31,10 +31,10 @@ exports.createNewUser = async (req, res) => {
       email,
       address,
     }).save();
-    res.json({ success: true, user });
+    return res.json({ success: true, user });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: 'Internal server error',
     });

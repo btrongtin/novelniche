@@ -409,6 +409,10 @@ exports.allEmployees = async (req, res) => {
 };
 
 exports.usersCount = async (req, res) => {
-  let total = await User.find({}).estimatedDocumentCount().lean();
-  res.json(total);
+  const users = await User.find({ role: 'guest' }).lean();
+  res.json(users.length);
+};
+exports.employeesCount = async (req, res) => {
+  const users = await User.find({ role: { $ne: 'guest' } }).lean();
+  res.json(users.length);
 };

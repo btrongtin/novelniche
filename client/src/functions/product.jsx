@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { filter } from 'lodash';
 
 export const createProduct = async (product, authtoken) =>
   await axios.post(`${import.meta.env.VITE_REACT_APP_API}/product`, product, {
@@ -62,3 +63,9 @@ export const getRelated = async (productId) =>
 
 export const fetchProductsByFilter = async (arg) =>
   await axios.post(`${import.meta.env.VITE_REACT_APP_API}/search/filters`, arg);
+
+export const fetchProductsByFilterAdmin = async (filter) =>
+  await axios.post(
+    `${import.meta.env.VITE_REACT_APP_API}/search/filters-admin`,
+    filter
+  );

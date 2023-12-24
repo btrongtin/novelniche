@@ -45,7 +45,8 @@ const Users = () => {
 
   return (
     <>
-      <h4 className="text-bold mb-5">Users</h4>
+      <h4 className="text-bold">Khách hàng</h4>
+      <p className="text-bold mb-5">{usersCount} khách hàng</p>
       {users && (
         <>
           <table className="table table-bordered">

@@ -117,6 +117,16 @@ export const getUsersCount = async (authtoken) =>
     },
   });
 
+export const getSellersCount = async (authtoken) =>
+  await axios.get(
+    `${import.meta.env.VITE_REACT_APP_API}/admin/users/totalEmployees`,
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+
 export const getUsers = async (authtoken, sort, order, page, perPage) =>
   await axios.post(
     `${import.meta.env.VITE_REACT_APP_API}/admin/users`,

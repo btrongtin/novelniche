@@ -21,6 +21,7 @@ const {
   usersCount,
   getUser,
   allEmployees,
+  employeesCount,
 } = require('../controllers/user');
 const { CLERK_WEIGHT } = require('../utils/const');
 
@@ -54,6 +55,12 @@ router.get(
   authCheck,
   [adminCheck(CLERK_WEIGHT)],
   usersCount
+);
+router.get(
+  '/admin/users/totalEmployees',
+  authCheck,
+  [adminCheck(CLERK_WEIGHT)],
+  employeesCount
 );
 router.get('/admin/users/:userId', authCheck, getUser);
 

@@ -8,57 +8,53 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 const CategoryUpdate = () => {
-    const { user } = useSelector((state) => ({ ...state }));
+  const { user } = useSelector((state) => ({ ...state }));
 
-    const [name, setName] = useState('');
-    const [loading, setLoading] = useState(false);
-    const { slug } = useParams();
+  const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { slug } = useParams();
 
-    useEffect(() => {
-        loadCategory();
-    }, []);
+  useEffect(() => {
+    loadCategory();
+  }, []);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const loadCategory = () =>
-        getCategory(slug).then((c) => setName(c.data.name));
+  const loadCategory = () =>
+    getCategory(slug).then((c) => setName(c.data.name));
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // console.log(name);
-        setLoading(true);
-        updateCategory(slug, { name }, user.token)
-            .then((res) => {
-                // console.log(res)
-                setLoading(false);
-                setName('');
-                toast.success(`"${res.data.name}" is updated`);
-                navigate('/admin/category');
-            })
-            .catch((err) => {
-                console.log(err);
-                setLoading(false);
-                if (err.response.status === 400) toast.error(err.response.data);
-            });
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // console.log(name);
+    setLoading(true);
+    updateCategory(slug, { name }, user.token)
+      .then((res) => {
+        // console.log(res)
+        setLoading(false);
+        setName('');
+        toast.success(`"${res.data.name}" is updated`);
+        navigate('/admin/category');
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+        if (err.response.status === 400) toast.error(err.response.data);
+      });
+  };
 
-    return (
-        <div className="">
-            {loading ? (
-                <h4 className="text-danger">Loading..</h4>
-            ) : (
-                <h4>Update category</h4>
-            )}
+  return (
+    <div className="">
+      {loading ? (
+        <h4 className="text-danger">Loading..</h4>
+      ) : (
+        <h4>Cập nhật danh mục</h4>
+      )}
 
-            <CategoryForm
-                handleSubmit={handleSubmit}
-                name={name}
-                setName={setName}
-            />
+      <CategoryForm handleSubmit={handleSubmit} name={name} setName={setName} />
 
-            <hr />
-        </div>
-    );
+      <hr />
+    </div>
+  );
 };
 
 export default CategoryUpdate;
