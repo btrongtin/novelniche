@@ -60,7 +60,10 @@ const AllProducts = () => {
       {loading ? (
         <h4 className="text-danger">Loading...</h4>
       ) : (
-        <h4 className="text-bold">Tất cả sản phẩm</h4>
+        <>
+          <h4 className="text-bold">Tất cả sản phẩm</h4>
+          <p className="text-bold">{productsCount} sản phẩm</p>
+        </>
       )}
       <div className="row mt-5">
         <Link
@@ -71,7 +74,10 @@ const AllProducts = () => {
           Tạo mới
         </Link>
       </div>
-      <ProductFilter />
+      <ProductFilter
+        setProducts={setProducts}
+        setProductsCount={setProductsCount}
+      />
       <table className="table table-striped ">
         <thead>
           <tr>

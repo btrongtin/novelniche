@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
 const AuthorForm = ({ handleSubmit, name, setName }) => (
   <form onSubmit={handleSubmit}>
     <div className="form-group">
-      <label>Name</label>
+      <label>Tên tác giả</label>
       <input
         type="text"
         className="form-control"
@@ -13,7 +13,7 @@ const AuthorForm = ({ handleSubmit, name, setName }) => (
         required
       />
       <br />
-      <button className="btn btn-outline-primary">Save</button>
+      <button className="btn btn-outline-primary">Thêm</button>
     </div>
   </form>
 );

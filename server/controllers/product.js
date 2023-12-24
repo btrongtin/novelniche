@@ -143,7 +143,8 @@ exports.listRelated = async (req, res) => {
 // SERACH / FILTER
 
 const handleQuery = async (req, res, query) => {
-  const products = await Product.find({ $text: { $search: query } })
+  const regex = new RegExp(query, 'i');
+  const products = await Product.find({ title: regex })
     .populate({ path: 'category', select: '_id name' })
     .populate({ path: 'postedBy', select: '_id name', strictPopulate: false })
     .lean();
@@ -178,6 +179,26 @@ const handleCategory = async (req, res, category) => {
     let products = await Product.find({ category })
       .populate({
         path: 'category',
+        select: '_id name',
+      })
+      .populate({
+        path: 'postedBy',
+        select: '_id name',
+        strictPopulate: false,
+      })
+      .lean();
+
+    res.json(products);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const handleAuthor = async (req, res, author) => {
+  try {
+    let products = await Product.find({ author })
+      .populate({
+        path: 'author',
         select: '_id name',
       })
       .populate({
@@ -264,8 +285,7 @@ const handleBrand = async (req, res, brand) => {
 };
 
 exports.searchFilters = async (req, res) => {
-  const { query, price, category, stars, sub, shipping, color, brand } =
-    req.body;
+  const { query, price, category, stars, sub, author } = req.body;
 
   if (query) {
     console.log('query --->', query);
@@ -283,6 +303,11 @@ exports.searchFilters = async (req, res) => {
     await handleCategory(req, res, category);
   }
 
+  if (author) {
+    console.log('author ---> ', author);
+    await handleAuthor(req, res, author);
+  }
+
   if (stars) {
     console.log('stars ---> ', stars);
     await handleStar(req, res, stars);
@@ -292,19 +317,37 @@ exports.searchFilters = async (req, res) => {
     console.log('sub ---> ', sub);
     await handleSub(req, res, sub);
   }
+};
 
-  if (shipping) {
-    console.log('shipping ---> ', shipping);
-    await handleShipping(req, res, shipping);
-  }
+exports.searchFiltersAdmin = async (req, res) => {
+  try {
+    const { title, category, author } = req.body;
 
-  if (color) {
-    console.log('color ---> ', color);
-    await handleColor(req, res, color);
-  }
+    const query = {};
 
-  if (brand) {
-    console.log('brand ---> ', brand);
-    await handleBrand(req, res, brand);
+    if (title) {
+      const regex = new RegExp(title, 'i');
+      query.title = regex;
+    }
+
+    if (category) {
+      query.category = category;
+    }
+
+    if (author) {
+      query.author = author;
+    }
+
+    console.log('QUERY: ', query);
+
+    const products = await Product.find(query).lean();
+    // const products2 = await Product.find({}).lean();
+
+    console.log('RPDO: ', products);
+
+    return res.json(products);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };

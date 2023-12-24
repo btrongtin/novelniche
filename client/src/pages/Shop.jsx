@@ -15,6 +15,7 @@ import {
 } from '@ant-design/icons';
 import Star from '../components/forms/Star';
 import Pagination from '../components/pagination/Pagination';
+import Search from '../components/forms/Search';
 
 const { SubMenu, ItemGroup } = Menu;
 const formatter = (value) => `${value} VND`;
@@ -29,7 +30,6 @@ const Shop = () => {
   const [categoryIds, setCategoryIds] = useState([]);
   const [star, setStar] = useState('');
   const [sub, setSub] = useState('');
-  const [shipping, setShipping] = useState('');
   let dispatch = useDispatch();
   let { search } = useSelector((state) => ({ ...state }));
   const { text } = search;
@@ -49,6 +49,7 @@ const Shop = () => {
   const fetchProducts = (arg) => {
     fetchProductsByFilter(arg).then((res) => {
       setProducts(res.data);
+      console.log('RSSSL ', res.data);
     });
   };
 
@@ -56,6 +57,7 @@ const Shop = () => {
   const loadAllProducts = () => {
     getProducts('createdAt', 'desc', page, PERPAGE).then((res) => {
       setProducts(res.data);
+      getProductsCount().then((res) => setProductsCount(res.data));
       setLoading(false);
     });
   };
@@ -64,6 +66,7 @@ const Shop = () => {
   useEffect(() => {
     const delayed = setTimeout(() => {
       fetchProducts({ query: text });
+      setProductsCount(products.length);
       if (!text) {
         loadAllProducts();
       }
@@ -88,7 +91,6 @@ const Shop = () => {
     setPrice(value);
     setStar('');
     setSub('');
-    setShipping('');
     setTimeout(() => {
       setOk(!ok);
     }, 300);
@@ -122,7 +124,6 @@ const Shop = () => {
     setPrice([0, 0]);
     setStar('');
     setSub('');
-    setShipping('');
     // console.log(e.target.value);
     let inTheState = [...categoryIds];
     let justChecked = e.target.value;
@@ -152,7 +153,6 @@ const Shop = () => {
     setCategoryIds([]);
     setStar(num);
     setSub('');
-    setShipping('');
     fetchProducts({ stars: num });
   };
 
@@ -166,41 +166,6 @@ const Shop = () => {
     </div>
   );
 
-  // 7. show products based on shipping yes/no
-  const showShipping = () => (
-    <>
-      <Checkbox
-        className="pb-2 pl-4 pr-4"
-        onChange={handleShippingchange}
-        value="Yes"
-        checked={shipping === 'Yes'}
-      >
-        Yes
-      </Checkbox>
-
-      <Checkbox
-        className="pb-2 pl-4 pr-4"
-        onChange={handleShippingchange}
-        value="No"
-        checked={shipping === 'No'}
-      >
-        No
-      </Checkbox>
-    </>
-  );
-  const handleShippingchange = (e) => {
-    setSub('');
-    dispatch({
-      type: 'SEARCH_QUERY',
-      payload: { text: '' },
-    });
-    setPrice([0, 0]);
-    setCategoryIds([]);
-    setStar('');
-    setShipping(e.target.value);
-    fetchProducts({ shipping: e.target.value });
-  };
-
   return (
     <div className="container pt-3">
       <div className="row">
@@ -209,12 +174,24 @@ const Shop = () => {
             mode="inline"
             defaultOpenKeys={['1', '2', '3', '4', '5', '6', '7']}
           >
+            <SubMenu
+              key="6"
+              title={
+                <span className="h6">
+                  <DownSquareOutlined /> Tên sách
+                </span>
+              }
+            >
+              <div style={{ maringTop: '-10px' }}>
+                <Search />
+              </div>
+            </SubMenu>
             {/* price */}
             <SubMenu
               key="1"
               title={
                 <span className="h6">
-                  <DollarOutlined /> Price
+                  <DollarOutlined /> Giá
                 </span>
               }
             >
@@ -237,7 +214,7 @@ const Shop = () => {
               key="2"
               title={
                 <span className="h6">
-                  <DownSquareOutlined /> Categories
+                  <DownSquareOutlined /> Thể loại
                 </span>
               }
             >
@@ -249,25 +226,11 @@ const Shop = () => {
               key="3"
               title={
                 <span className="h6">
-                  <StarOutlined /> Rating
+                  <StarOutlined /> Đánh giá
                 </span>
               }
             >
               <div style={{ maringTop: '-10px' }}>{showStars()}</div>
-            </SubMenu>
-
-            {/* shipping */}
-            <SubMenu
-              key="4"
-              title={
-                <span className="h6">
-                  <DownSquareOutlined /> Shipping
-                </span>
-              }
-            >
-              <div style={{ maringTop: '-10px' }} className="pr-5">
-                {showShipping()}
-              </div>
             </SubMenu>
           </Menu>
         </div>
@@ -275,7 +238,13 @@ const Shop = () => {
         <div className="col-md-9 pt-2">
           {loading ? <h4 className="text-danger">Loading...</h4> : ''}
 
-          {products.length < 1 && <p>No products found</p>}
+          {products.length < 1 ? (
+            <p>Không tìm thấy sản phẩm</p>
+          ) : (
+            <h4 className="text-bold">
+              Cửa hàng: tìm thấy {productsCount} sản phẩm
+            </h4>
+          )}
 
           <div className="row five-column pb-3">
             {products.map((p) => (

@@ -15,6 +15,7 @@ const {
   productStar,
   listRelated,
   searchFilters,
+  searchFiltersAdmin,
 } = require('../controllers/product');
 const { CLERK_WEIGHT } = require('../utils/const');
 
@@ -32,5 +33,6 @@ router.put('/product/star/:productId', authCheck, productStar);
 router.get('/product/related/:productId', listRelated);
 // search
 router.post('/search/filters', searchFilters);
+router.post('/search/filters-admin', searchFiltersAdmin);
 
 module.exports = router;

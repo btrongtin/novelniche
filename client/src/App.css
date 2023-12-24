@@ -299,3 +299,6 @@ img {
 .w-100 > .react-datepicker-wrapper {
   width: 100% !important;
 }
+.w-100percent {
+  width: 100% !important;
+}

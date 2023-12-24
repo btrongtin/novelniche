@@ -6,7 +6,12 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import { ConfigProvider, Pagination } from 'antd';
-import { getEmployees, getUsers, getUsersCount } from '../../../functions/user';
+import {
+  getEmployees,
+  getSellersCount,
+  getUsers,
+  getUsersCount,
+} from '../../../functions/user';
 import { Link } from 'react-router-dom';
 import { createNewEmployee } from '../../../functions/auth';
 import { changeRole } from '../../../functions/admin';
@@ -28,11 +33,15 @@ const Sellers = () => {
 
   useEffect(() => {
     loadUsers();
+    loadSellersCount();
   }, [page]);
 
   useEffect(() => {
-    getUsersCount(user.token).then((res) => setUsersCount(res.data));
+    loadSellersCount();
   }, []);
+
+  const loadSellersCount = () =>
+    getSellersCount(user.token).then((res) => setUsersCount(res.data));
 
   const loadUsers = () =>
     getEmployees(user.token, 'name', 'asc', page, PAGE_SIZE).then((res) => {
@@ -86,11 +95,35 @@ const Sellers = () => {
     return false;
   };
 
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
+  const validateDuplicate = (email, users) => {
+    for (let i = 0; i < users.length; i++)
+      if (users[i].email === email) return false;
+    return true;
+  };
+
+  const clearInput = () => {
+    setNewEmployee({
+      name: '',
+      address: '',
+      role: 'clerk',
+      email: '',
+    });
+  };
+
   return (
     <>
       <h4 className="text-bold mb-5">Nhân Viên</h4>
       {users && (
         <>
+          <p className="text-bold">{usersCount} nhân viên</p>
           <table className="table table-bordered">
             <thead className="thead-light">
               <tr>
@@ -155,12 +188,29 @@ const Sellers = () => {
               className="btn btn-primary float-right"
               onClick={() => {
                 if (!checkHasEmptyProp(newEmployee)) {
+                  if (
+                    !validateEmail(newEmployee.email) ||
+                    !validateDuplicate(newEmployee.email, users)
+                  ) {
+                    addToast('Email không hợp lệ', {
+                      appearance: 'error',
+                      autoDismiss: true,
+                    });
+                    return;
+                  }
                   createNewEmployee(user.token, newEmployee)
                     .then((res) => {
-                      if (res.success) {
+                      if (res.data.success) {
                         loadUsers();
+                        loadSellersCount();
                         addToast('Thêm nhân viên thành công', {
                           appearance: 'success',
+                          autoDismiss: true,
+                        });
+                        clearInput();
+                      } else {
+                        addToast('Có lỗi xảy ra khi thêm nhân viên', {
+                          appearance: 'error',
                           autoDismiss: true,
                         });
                       }
@@ -186,7 +236,7 @@ const Sellers = () => {
         </>
       )}
 
-      {/* <div className="pro-pagination-style text-center mt-30 mb-5">
+      <div className="pro-pagination-style text-center mt-30 mb-5">
         <ConfigProvider
           theme={{
             token: {
@@ -206,7 +256,7 @@ const Sellers = () => {
             />
           )}
         </ConfigProvider>
-      </div> */}
+      </div>
     </>
   );
 };

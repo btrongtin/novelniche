@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { getCategories } from '../../functions/category';
 import { getAuthors } from '../../functions/author';
 import { BsSearch } from 'react-icons/bs';
+import { fetchProductsByFilterAdmin } from '../../functions/product';
 
-const ProductFilter = () => {
+const ProductFilter = ({ setProducts, setProductsCount }) => {
   const [categories, setCategories] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [filter, setFilter] = useState({ author: '', category: '', title: '' });
@@ -24,11 +25,17 @@ const ProductFilter = () => {
 
   const handleCategoryChange = (e) => {
     e.preventDefault();
-    setFilter({ ...filter, subs: [] });
+    setFilter({ ...filter, category: e.target.value });
   };
   const handleAuthorChange = (e) => {
     e.preventDefault();
     setFilter({ ...filter, author: e.target.value });
+  };
+  const handleSubmit = () => {
+    fetchProductsByFilterAdmin(filter).then((res) => {
+      setProducts(res.data);
+      setProductsCount(res.data.length);
+    });
   };
 
   return (
@@ -39,6 +46,10 @@ const ProductFilter = () => {
             type="text"
             className="form-control"
             placeholder="Nhập tên sách..."
+            value={filter.title}
+            onChange={(e) => {
+              setFilter({ ...filter, title: e.target.value });
+            }}
           />
           <div className="input-group mb-4">
             <select
@@ -46,7 +57,7 @@ const ProductFilter = () => {
               className="form-control"
               onChange={handleCategoryChange}
             >
-              <option>Danh mục</option>
+              <option value={''}>Danh mục: tất cả</option>
               {categories.length > 0 &&
                 categories.map((c) => (
                   <option key={c._id} value={c._id}>
@@ -59,7 +70,7 @@ const ProductFilter = () => {
               className="form-control"
               onChange={handleAuthorChange}
             >
-              <option>Tác giả</option>
+              <option value={''}>Tác giả: tất cả</option>
               {authors.length > 0 &&
                 authors.map((c) => (
                   <option key={c._id} value={c._id}>
@@ -71,6 +82,7 @@ const ProductFilter = () => {
           <div
             className="btn btn-primary"
             style={{ width: '2.5rem', height: '2.5rem' }}
+            onClick={handleSubmit}
           >
             <BsSearch />
           </div>
