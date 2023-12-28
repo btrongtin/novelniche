@@ -16,7 +16,7 @@ const Orders = ({ orders, handleStatusChange }) => {
           <b>{order._id.toString().substr(order._id.toString().length - 8)}</b>
         </Link>
       </td>
-      <td>{moment(order.createdAt).format('DD MMM YYYY - h:mm:ss a')}</td>
+      <td>{moment(order.createdAt).format('DD/MM/YYYY - h:mm:ss a')}</td>
       <td>{order.orderedBy.name}</td>
       <td
         dangerouslySetInnerHTML={{

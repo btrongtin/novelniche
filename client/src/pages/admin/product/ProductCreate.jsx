@@ -8,6 +8,7 @@ import { getCategories } from '../../../functions/category';
 import FileUpload from '../../../components/forms/FileUpload';
 import { LoadingOutlined } from '@ant-design/icons';
 import { getAuthors } from '../../../functions/author';
+import { useToasts } from 'react-toast-notifications';
 
 const initialState = {
   title: '',
@@ -24,23 +25,41 @@ const initialState = {
 const ProductCreate = () => {
   const [values, setValues] = useState(initialState);
   const [loading, setLoading] = useState(false);
-
+  const { addToast } = useToasts();
   // redux
   const { user } = useSelector((state) => ({ ...state }));
-
+  const checkHasEmptyProp = (obj) => {
+    for (var key in obj) {
+      if (obj[key] === '') {
+        return true;
+      }
+    }
+    return false;
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('DATAAA: ', values);
+    if (checkHasEmptyProp(values)) {
+      addToast(`Vui lòng điền đầy đủ thông tin!`, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
+    }
     createProduct(values, user.token)
       .then((res) => {
-        console.log(res);
         window.alert(`"${res.data.title}" is created`);
+        addToast(`Thêm mới sách ${res.data.title} thành công`, {
+          appearance: 'success',
+          autoDismiss: true,
+        });
         window.location.reload();
       })
       .catch((err) => {
         console.log(err);
-        // if (err.response.status === 400) toast.error(err.response.data);
-        toast.error(err.response.data.err);
+        addToast(`Có lỗi xảy ra khi tạo sách.`, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
       });
   };
 

@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { getProductCartQuantity } from '../../helpers/product';
 import { useToasts } from 'react-toast-notifications';
 import SectionTitle from '../section-title/SectionTitle';
+import { numberWithCommas } from '../../utils';
 
 const { TabPane } = Tabs;
 
@@ -145,7 +146,7 @@ const SingleProduct = ({ product, onStarClick, star }) => {
             <div className="col-lg-4 col-md-4">
               <div className="product-details-content">
                 <div className="product-details-stamp">
-                  New / Paperback - {product.price}
+                  Mới / Bìa cứng - {numberWithCommas(product.price || 0)} đ
                 </div>
                 <div className="pro-details-quality">
                   <div className="pro-details-cart btn-hover">

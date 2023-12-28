@@ -1,5 +1,6 @@
 import React from 'react';
 import DashboardTopCard from './DashboardTopCard';
+import { numberWithCommas } from '../../utils';
 
 const TopCardHolder = ({ data }) => {
   if (!data) return;
@@ -7,37 +8,37 @@ const TopCardHolder = ({ data }) => {
     {
       id: '1',
       bgClass: 'bg-order',
-      title: 'Orders Received',
+      title: 'Tổng đơn hàng',
       iconClass: 'fa fa-cart-plus',
-      footer: 'Completed orders',
+      footer: 'Đơn hàng hoàn thành',
       amount: data.totalOrder || 0,
       footerAmount: data.totalCompletedOrder || 0,
     },
     {
       id: '2',
       bgClass: 'bg-customer',
-      title: 'Total Customer',
+      title: 'Tổng khách hàng',
       iconClass: 'fa fa-regular fa-user',
-      footer: 'New users',
+      footer: 'Khách hàng mới',
       amount: data.totalUser || 0,
       footerAmount: data.totalNewUser || 0,
     },
     {
       id: '3',
       bgClass: 'bg-product',
-      title: 'Total Products',
+      title: 'Số lượng sách',
       iconClass: 'fa fa-solid fa-book',
-      footer: 'New products',
+      footer: 'Sách mới',
       amount: data.totalProduct || 0,
       footerAmount: data.totalNewProduct || 0,
     },
     {
       id: '4',
       bgClass: 'bg-income',
-      title: 'Income this month',
+      title: 'Doanh thu tháng',
       iconClass: 'fa fa-money',
-      footer: 'Purchased orders',
-      amount: data.totalIncomeThisMonth[0]?.amount || 0,
+      footer: 'Đơn đã thanh toán',
+      amount: numberWithCommas(data.totalIncomeThisMonth[0]?.amount || 0) + 'đ',
       footerAmount: data.totalPurchasedOrder || 0,
     },
   ];

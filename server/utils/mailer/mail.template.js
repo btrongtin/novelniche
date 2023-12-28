@@ -1474,16 +1474,20 @@ exports.receipt = (user, order) => {
                                                       align="left"
                                                     >
                                                       Tên người nhận: ${
-                                                        user.name || user.email
+                                                        order.recipientName ||
+                                                        user.name ||
+                                                        user.email ||
+                                                        ''
                                                       }
                                                       <br />
                                                       Địa chỉ: ${
-                                                        user.address || ''
+                                                        order.address ||
+                                                        user.address ||
+                                                        ''
                                                       }
                                                       <br />
                                                       Số điện thoại: ${
-                                                        user.phone ||
-                                                        '0123 456 789'
+                                                        order.phone || ''
                                                       }
                                                     </p>
                                                   </th>

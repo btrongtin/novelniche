@@ -113,7 +113,7 @@ const Product = () => {
 
       {/* END TAB COMPONENT */}
       <SectionTitle
-        titleText={'Related products'}
+        titleText={'Sách tương tự'}
         positionClass="text-center"
         spaceBottomClass="mb-30"
       />

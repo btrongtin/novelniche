@@ -49,7 +49,7 @@ const Shop = () => {
   const fetchProducts = (arg) => {
     fetchProductsByFilter(arg).then((res) => {
       setProducts(res.data);
-      console.log('RSSSL ', res.data);
+      setProductsCount(res.data.length);
     });
   };
 
@@ -66,7 +66,6 @@ const Shop = () => {
   useEffect(() => {
     const delayed = setTimeout(() => {
       fetchProducts({ query: text });
-      setProductsCount(products.length);
       if (!text) {
         loadAllProducts();
       }

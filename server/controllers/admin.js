@@ -85,6 +85,40 @@ exports.changeRole = async (req, res) => {
   }
 };
 
+exports.changeState = async (req, res) => {
+  const { employeeId, state } = req.body;
+  try {
+    let updated = await User.findByIdAndUpdate(
+      employeeId,
+      { state },
+      { new: true }
+    ).lean();
+
+    res.json({ success: true, updated });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+exports.searchUser = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const query = { role: 'guest' };
+
+    if (name) {
+      const regex = new RegExp(name, 'i');
+      query.email = regex;
+    }
+
+    const users = await User.find(query).lean();
+
+    return res.json(users);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 exports.getDashboard = async (req, res) => {
   const date = new Date();
   const month = date.getMonth();
@@ -93,11 +127,12 @@ exports.getDashboard = async (req, res) => {
   const totalCompletedOrder = await Order.find({
     orderStatus: 'Completed',
   }).countDocuments();
-  const totalUser = await User.countDocuments();
+  const totalUser = await User.countDocuments({ role: 'guest' });
   const totalNewUser = await User.find({
     createdAt: {
       $gte: new Date().setDate(new Date().getDate() - 30),
     },
+    role: 'guest',
   }).countDocuments();
   const totalProduct = await Product.countDocuments();
   const totalNewProduct = await Product.find({
@@ -185,7 +220,7 @@ exports.getDashboard = async (req, res) => {
   const productCountByCategory = productCountByCategoryRaw.map((item) => {
     const category = categories.find((cat) => cat._id.equals(item._id));
     return {
-      category: category.name,
+      category: category ? category.name : 'danh mục rỗng',
       count: item.productCount,
     };
   });

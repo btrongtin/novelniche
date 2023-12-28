@@ -14,8 +14,7 @@ import {
 } from '../../../functions/user';
 import { Link } from 'react-router-dom';
 import { createNewEmployee } from '../../../functions/auth';
-import { changeRole } from '../../../functions/admin';
-import { BsFillTrash3Fill } from 'react-icons/bs';
+import { changeRole, changeUserState } from '../../../functions/admin';
 
 const Sellers = () => {
   const PAGE_SIZE = 6;
@@ -58,12 +57,36 @@ const Sellers = () => {
     });
   };
 
+  const handleStateChange = (employeeId, state) => {
+    changeUserState(employeeId, state, user.token)
+      .then(() => {
+        addToast('Cập nhật thành công', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        loadUsers();
+      })
+      .catch((e) => {
+        console.log(e);
+        if (e.response.status === 403) {
+          addToast(`Lỗi: Bạn không có quyền thực hiện hành động này`, {
+            appearance: 'error',
+            autoDismiss: true,
+          });
+        }
+      });
+  };
+
   const showUsersInTable = (user, index) => (
     <tr key={user._id}>
       <td>{index + 1}</td>
       <td>{user.name}</td>
       <td>{user.email}</td>
-      <td dangerouslySetInnerHTML={{ __html: user.address }}></td>
+      <td className="text-muted text-bold" style={{ fontStyle: 'italic' }}>
+        {user.lastLogin
+          ? moment(user.lastLogin).format('DD/MM/YYYY - h:mm:ss a')
+          : 'chưa đăng nhập'}
+      </td>
       <td>
         <select
           className="form-control"
@@ -75,9 +98,14 @@ const Sellers = () => {
         </select>
       </td>
       <td>
-        <BsFillTrash3Fill
-          style={{ fontSize: '16px', color: 'red', cursor: 'pointer' }}
-        />
+        <select
+          className="form-control"
+          defaultValue={user.state || 'active'}
+          onChange={(e) => handleStateChange(user._id, e.target.value)}
+        >
+          <option value="active">Đang đoạt động</option>
+          <option value="disabled">Ngưng kích hoạt</option>
+        </select>
       </td>
     </tr>
   );
@@ -130,9 +158,9 @@ const Sellers = () => {
                 <th scope="col">#</th>
                 <th scope="col">Tên</th>
                 <th scope="col">Email</th>
-                <th scope="col">Địa chỉ</th>
+                <th scope="col">Đăng nhập lần cuối</th>
                 <th scope="col">Quyền</th>
-                <th scope="col"></th>
+                <th scope="col">Trạng thái</th>
               </tr>
             </thead>
             <tbody>

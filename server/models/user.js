@@ -22,6 +22,8 @@ const userSchema = new mongoose.Schema(
       enum: ROLES,
       default: GUEST,
     },
+    lastLogin: Date,
+    state: { type: String, default: 'active', enum: ['active', 'disabled'] },
   },
   { timestamps: true }
 );

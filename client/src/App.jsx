@@ -28,6 +28,7 @@ function App() {
                 token: idTokenResult.token,
                 role: res.data.role,
                 _id: res.data._id,
+                state: res.data.state,
               },
             });
           })

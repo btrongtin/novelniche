@@ -18,8 +18,6 @@ exports.authCheck = async (req, res, next) => {
   }
 };
 
-/// LỖI LÀ DO BÊN MIDDLEWARE AUTH, REQ.USER GỌI TRONG AUTH CHECK, MỘT SỐ ROUTE ADMIN KHÔNG CẦN AUTHCHECK => KHÔNG CÓ REQ.USER, SEEMS LIKE AUTH CHECK & ADMIN CHECK ĐI CHUNG
-
 exports.adminCheck = (weight) => {
   return async (req, res, next) => {
     try {

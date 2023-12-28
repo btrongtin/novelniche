@@ -11,10 +11,15 @@ import { Link } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import AuthorForm from '../../../components/forms/AuthorForm';
 import LocalSearch from '../../../components/forms/LocalSearch';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { useToasts } from 'react-toast-notifications';
+
+const MySwal = withReactContent(Swal);
 
 const AuthorCreate = () => {
   const { user } = useSelector((state) => ({ ...state }));
-
+  const { addToast } = useToasts();
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [authors, setAuthors] = useState([]);
@@ -46,24 +51,35 @@ const AuthorCreate = () => {
       });
   };
 
-  const handleRemove = async (slug) => {
-    // let answer = window.confirm("Delete?");
-    // console.log(answer, slug);
-    if (window.confirm('Delete?')) {
-      setLoading(true);
-      removeAuthor(slug, user.token)
-        .then((res) => {
-          setLoading(false);
-          toast.error(`${res.data.name} deleted`);
-          loadAuthors();
-        })
-        .catch((err) => {
-          if (err.response.status === 400) {
+  const handleRemove = async (slug, name) => {
+    MySwal.fire({
+      title: `Xác nhận xóa tác giả ${name}?`,
+      text: 'Hành động này sẽ không thể khôi phục.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6e7881',
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Hủy',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setLoading(true);
+        removeAuthor(slug, user.token)
+          .then((res) => {
             setLoading(false);
-            toast.error(err.response.data);
-          }
-        });
-    }
+            toast.error(`${res.data.name} deleted`);
+            loadAuthors();
+          })
+          .catch((err) => {
+            if (err.response.status === 403)
+              addToast(`Lỗi: Bạn không có quyền thực hiện hành động này!`, {
+                appearance: 'warning',
+                autoDismiss: true,
+              });
+            setLoading(false);
+          });
+      }
+    });
   };
 
   // step 4
@@ -88,7 +104,7 @@ const AuthorCreate = () => {
         <div className="alert alert-secondary" key={c._id}>
           {c.name}
           <span
-            onClick={() => handleRemove(c.slug)}
+            onClick={() => handleRemove(c.slug, c.name)}
             className="btn btn-sm float-right"
           >
             <DeleteOutlined className="text-danger" />

@@ -47,10 +47,16 @@ export const applyCoupon = async (authtoken, coupon) =>
     }
   );
 
-export const createOrder = async (paymentData, shippingAddress, authtoken) =>
+export const createOrder = async (
+  paymentData,
+  shippingAddress,
+  phone,
+  recipientName,
+  authtoken
+) =>
   await axios.post(
     `${import.meta.env.VITE_REACT_APP_API}/user/order`,
-    { paymentData, shippingAddress },
+    { paymentData, shippingAddress, phone, recipientName },
     {
       headers: {
         authtoken,
@@ -98,11 +104,19 @@ export const createCashOrderForUser = async (
   authtoken,
   COD,
   couponTrueOrFalse,
-  shippingAddress
+  shippingAddress,
+  phone,
+  recipientName
 ) =>
   await axios.post(
     `${import.meta.env.VITE_REACT_APP_API}/user/cash-order`,
-    { couponApplied: couponTrueOrFalse, COD, shippingAddress },
+    {
+      couponApplied: couponTrueOrFalse,
+      COD,
+      shippingAddress,
+      phone,
+      recipientName,
+    },
     {
       headers: {
         authtoken,

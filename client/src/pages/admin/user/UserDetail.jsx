@@ -61,7 +61,7 @@ const UserDetail = () => {
           <b>{order._id.toString().substr(order._id.toString().length - 8)}</b>
         </Link>
       </td>
-      <td>{moment(order.createdAt).format('DD MMM YYYY - h:mm:ss a')}</td>
+      <td>{moment(order.createdAt).format('DD/MM/YYYY - h:mm:ss a')}</td>
       <td>{numberWithCommas(order.paymentIntent.amount || 0)}</td>
       <td>
         <select
@@ -159,14 +159,13 @@ const UserDetail = () => {
                       </div>
                       <div className="flex-center">
                         <span className="text-bold text-muted d-block">
-                          Địa chỉ giao hàng
+                          Ngày tham gia
                         </span>
-                        <span
-                          className="text-bold d-block"
-                          dangerouslySetInnerHTML={{
-                            __html: userDetail.address || '',
-                          }}
-                        ></span>
+                        <span className="text-bold d-block">
+                          {moment(userDetail.createdAt).format(
+                            'DD/MM/YYYY - h:mm:ss a'
+                          )}
+                        </span>
                       </div>
                     </div>
                   </div>

@@ -30,6 +30,7 @@ const orderSchema = new mongoose.Schema(
     orderedBy: { type: ObjectId, ref: 'User' },
     coupon: Number,
     phone: String,
+    recipientName: String,
   },
   { timestamps: true }
 );
