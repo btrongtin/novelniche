@@ -17,12 +17,12 @@ const {
   searchFilters,
   searchFiltersAdmin,
 } = require('../controllers/product');
-const { CLERK_WEIGHT } = require('../utils/const');
+const { CLERK_WEIGHT, ADMIN_WEIGHT } = require('../utils/const');
 
 // routes
 router.post('/product', create);
 router.get('/products/total', productsCount);
-router.delete('/product/:slug', authCheck, [adminCheck(CLERK_WEIGHT)], remove);
+router.delete('/product/:slug', authCheck, [adminCheck(ADMIN_WEIGHT)], remove);
 router.get('/product/:slug', read);
 router.put('/product/:slug', authCheck, [adminCheck(CLERK_WEIGHT)], update);
 

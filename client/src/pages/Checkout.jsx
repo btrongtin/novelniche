@@ -29,6 +29,8 @@ const Checkout = () => {
   });
   const [addressSaved, setAddressSaved] = useState(false);
   const [coupon, setCoupon] = useState('');
+  const [phone, setPhone] = useState('');
+  const [recipientName, setRecipientName] = useState('');
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
@@ -56,7 +58,6 @@ const Checkout = () => {
 
   useEffect(() => {
     getProvinces().then((res) => {
-      console.log('RES: ', res);
       setProvinces(res.data);
     });
   }, []);
@@ -113,16 +114,9 @@ const Checkout = () => {
     });
   };
 
-  // const saveAddressToDb = () => {
-  //   console.log(JSON.stringify(address));
-  //   return;
-  //   saveUserAddress(user.token, address).then((res) => {
-  //     if (res.data.ok) {
-  //       setAddressSaved(true);
-  //       toast.success('Address saved');
-  //     }
-  //   });
-  // };
+  const handleGetBack = () => {
+    navigate('/cart');
+  };
 
   const applyDiscountCoupon = () => {
     console.log('send coupon to backend', coupon);
@@ -149,8 +143,18 @@ const Checkout = () => {
   };
 
   const handleOnlinePayment = () => {
+    if (user.state === 'disabled') {
+      addToast(
+        'Tài khoản của bạn đang bị vô hiệu hóa nên không thể đặt hàng. Vui lòng liên hệ quản trị viên để biết thêm chi tiết.',
+        {
+          appearance: 'error',
+          autoDismiss: true,
+        }
+      );
+      return;
+    }
     if (!validateAddress()) {
-      addToast('Vui lòng điền đầy đủ địa chỉ!', {
+      addToast('Vui lòng điền đầy đủ thông tin giao hàng!', {
         appearance: 'error',
         autoDismiss: true,
       });
@@ -160,9 +164,17 @@ const Checkout = () => {
       'shippingAddress',
       `${address.road}, ${address.ward}, ${address.district}, ${address.province}`
     );
+    localStorage.setItem('phone', phone);
+    localStorage.setItem('recipientName', recipientName);
     createPaymentOrder(user.token).then((res) => {
       window.location.href = decodeURI(res.data.redirectUrl);
     });
+  };
+
+  const validatePhone = (phoneNum) => {
+    if (!phoneNum) return false;
+    const regex = /^\d{10}$/;
+    return regex.test(phoneNum);
   };
 
   const validateAddress = () => {
@@ -174,13 +186,34 @@ const Checkout = () => {
         valid = false;
       }
     }
+    if (!validatePhone(phone) || recipientName === '') valid = false;
 
     return valid;
   };
 
   const showAddress = () => (
     <>
+      <p className="text-bold text-muted">Thông tin người nhận</p>
       <div className="input-group">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Tên người nhận"
+          required
+          value={recipientName || ''}
+          onChange={(e) => setRecipientName(e.target.value)}
+        />
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Số điện thoại"
+          required
+          value={phone || ''}
+          onChange={(e) => setPhone(e.target.value)}
+        />
+      </div>
+      <p className="text-bold text-muted mt-4">Địa chỉ</p>
+      <div className="input-group mb-3">
         <select
           name="role"
           className="form-control"
@@ -271,8 +304,18 @@ const Checkout = () => {
   );
 
   const createCashOrder = () => {
+    if (user.state === 'disabled') {
+      addToast(
+        'Tài khoản của bạn đang bị vô hiệu hóa nên không thể đặt hàng. Vui lòng liên hệ quản trị viên để biết thêm chi tiết.',
+        {
+          appearance: 'error',
+          autoDismiss: true,
+        }
+      );
+      return;
+    }
     if (!validateAddress()) {
-      addToast('Vui lòng điền đầy đủ địa chỉ!', {
+      addToast('Vui lòng điền đầy đủ thông tin giao hàng!', {
         appearance: 'error',
         autoDismiss: true,
       });
@@ -282,7 +325,9 @@ const Checkout = () => {
       user.token,
       COD,
       couponTrueOrFalse,
-      `${address.road}, ${address.ward}, ${address.district}, ${address.province}`
+      `${address.road}, ${address.ward}, ${address.district}, ${address.province}`,
+      phone,
+      recipientName
     ).then((res) => {
       console.log('USER CASH ORDER CREATED RES ', res);
       // empty cart form redux, local Storage, reset coupon, reset COD, redirect
@@ -350,10 +395,11 @@ const Checkout = () => {
             <div className="col-md-6">
               <button
                 disabled={!products.length}
-                onClick={emptyCart}
+                // onClick={emptyCart}
+                onClick={handleGetBack}
                 className="btn btn-secondary"
               >
-                Xóa giỏ hàng
+                Trở lại
               </button>
             </div>
             <div className="col-md-6">

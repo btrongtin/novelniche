@@ -13,7 +13,7 @@ const AuthorForm = ({ handleSubmit, name, setName }) => (
         required
       />
       <br />
-      <button className="btn btn-outline-primary">Thêm</button>
+      <button className="btn btn-outline-primary">Lưu</button>
     </div>
   </form>
 );

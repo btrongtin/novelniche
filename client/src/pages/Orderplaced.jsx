@@ -25,30 +25,32 @@ const Orderplaced = () => {
       transactionNo: searchParams.get('vnp_TransactionNo'),
       responseCode: searchParams.get('vnp_ResponseCode'),
     };
-    console.log('ABCC: ', +searchParams.get('vnp_Amount') / 100);
-    console.log('DATAA: ', data);
     const shippingAddress = localStorage.getItem('shippingAddress');
+    const phone = localStorage.getItem('phone');
+    const recipientName = localStorage.getItem('recipientName');
     // here you get result after successful payment
     // create order and save in database for admin to process
-    createOrder(data, shippingAddress, user.token).then((res) => {
-      if (res.data.ok) {
-        setOrderId(res.data.orderId);
-        // empty cart from local storage
-        if (typeof window !== 'undefined') localStorage.removeItem('cart');
-        // empty cart from redux
-        dispatch({
-          type: 'ADD_TO_CART',
-          payload: [],
-        });
-        // reset coupon to false
-        dispatch({
-          type: 'COUPON_APPLIED',
-          payload: false,
-        });
-        // empty cart from database
-        emptyUserCart(user.token);
+    createOrder(data, shippingAddress, phone, recipientName, user.token).then(
+      (res) => {
+        if (res.data.ok) {
+          setOrderId(res.data.orderId);
+          // empty cart from local storage
+          if (typeof window !== 'undefined') localStorage.removeItem('cart');
+          // empty cart from redux
+          dispatch({
+            type: 'ADD_TO_CART',
+            payload: [],
+          });
+          // reset coupon to false
+          dispatch({
+            type: 'COUPON_APPLIED',
+            payload: false,
+          });
+          // empty cart from database
+          emptyUserCart(user.token);
+        }
       }
-    });
+    );
     // empty user cart from redux store and local storage
     console.log(JSON.stringify(data, null, 4));
   };

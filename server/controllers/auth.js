@@ -5,17 +5,20 @@ exports.createOrUpdateUser = async (req, res) => {
 
   const user = await User.findOneAndUpdate(
     { email },
-    { name: email.split('@')[0], picture },
+    { name: email.split('@')[0], picture, lastLogin: new Date() },
     { new: true }
   );
   if (user) {
-    console.log('USER UPDATED', user);
-    res.json(user);
+    if (user.state === 'disabled') {
+      return res.json({ success: false, message: 'Suspended user' });
+    }
+    return res.json({ success: true, user });
   } else {
     const newUser = await new User({
       email,
       name: email.split('@')[0],
       picture,
+      lastLogin: new new Date()(),
     }).save();
     console.log('USER CREATED', newUser);
     res.json(newUser);
@@ -47,10 +50,6 @@ exports.currentUser = async (req, res) => {
     res.json(user);
   } catch (error) {
     console.log(error);
-    // res.status(500).json({
-    //     success: false,
-    //     message: 'Internal server error',
-    // });
     throw new Error(err);
   }
 };

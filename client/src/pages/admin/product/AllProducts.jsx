@@ -6,13 +6,18 @@ import { toast } from 'react-toastify';
 import { ConfigProvider, Pagination } from 'antd';
 import { Link } from 'react-router-dom';
 import ProductFilter from '../../../components/product/ProductFilter';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { useToasts } from 'react-toast-notifications';
 
+const MySwal = withReactContent(Swal);
 const AllProducts = () => {
   const PAGE_SIZE = 8;
   const [products, setProducts] = useState([]);
   const [productsCount, setProductsCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const { addToast } = useToasts();
   // redux
   const { user } = useSelector((state) => ({ ...state }));
 
@@ -38,21 +43,34 @@ const AllProducts = () => {
   };
 
   const handleRemove = (slug, name) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete "${name}"?, this action can not be undo`
-      )
-    ) {
-      removeProduct(slug, user.token)
-        .then((res) => {
-          loadAllProducts();
-          toast.error(`${res.data.title} is deleted`);
-        })
-        .catch((err) => {
-          if (err.response.status === 400) toast.error(err.response.data);
-          console.log(err);
-        });
-    }
+    MySwal.fire({
+      title: `Xác nhận sản phẩm ${name}?`,
+      text: 'Hành động này sẽ không thể khôi phục.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6e7881',
+      confirmButtonText: 'Xóa',
+      cancelButtonText: 'Hủy',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeProduct(slug, user.token)
+          .then((res) => {
+            loadAllProducts();
+            addToast(`Đã xóa sản phẩm ${res.data.title}`, {
+              appearance: 'warning',
+              autoDismiss: true,
+            });
+          })
+          .catch((err) => {
+            if (err.response.status === 403)
+              addToast(`Lỗi: Bạn không có quyền thực hiện hành động này!`, {
+                appearance: 'error',
+                autoDismiss: true,
+              });
+          });
+      }
+    });
   };
 
   return (
@@ -82,13 +100,13 @@ const AllProducts = () => {
         <thead>
           <tr>
             <th scope="col">ID</th>
-            <th scope="col">Title</th>
-            <th scope="col">Image</th>
-            <th scope="col">Author</th>
-            <th scope="col">Category</th>
-            <th scope="col">Price</th>
-            <th scope="col">Sold</th>
-            <th scope="col">Quantity</th>
+            <th scope="col">Tên sách</th>
+            <th scope="col">Ảnh</th>
+            <th scope="col">Tác giả</th>
+            <th scope="col">Danh mục</th>
+            <th scope="col">Giá</th>
+            <th scope="col">Đã bán</th>
+            <th scope="col">Số lượng còn</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -116,8 +134,8 @@ const AllProducts = () => {
                   />
                 </div>
               </td>
-              <td>{product.author?.name}</td>
-              <td>{product.category.name}</td>
+              <td>{product.author?.name || 'chưa có tác giả'}</td>
+              <td>{product.category?.name || 'chưa có danh mục'}</td>
               <td>{product.price}</td>
               <td>{product.sold}</td>
               <td>{product.quantity}</td>

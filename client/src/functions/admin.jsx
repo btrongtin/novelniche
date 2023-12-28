@@ -61,6 +61,27 @@ export const changeRole = async (employeeId, role, authtoken) =>
     }
   );
 
+export const changeUserState = async (employeeId, state, authtoken) =>
+  await axios.put(
+    `${import.meta.env.VITE_REACT_APP_API}/admin/changeState`,
+    { employeeId, state },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+export const searchUserByName = async (name, authtoken) =>
+  await axios.post(
+    `${import.meta.env.VITE_REACT_APP_API}/admin/searchUser`,
+    { name },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+
 export const getDashboard = async (authtoken) =>
   await axios.get(`${import.meta.env.VITE_REACT_APP_API}/admin/dashboard`, {
     headers: {

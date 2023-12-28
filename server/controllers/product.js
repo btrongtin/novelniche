@@ -338,12 +338,7 @@ exports.searchFiltersAdmin = async (req, res) => {
       query.author = author;
     }
 
-    console.log('QUERY: ', query);
-
     const products = await Product.find(query).lean();
-    // const products2 = await Product.find({}).lean();
-
-    console.log('RPDO: ', products);
 
     return res.json(products);
   } catch (err) {

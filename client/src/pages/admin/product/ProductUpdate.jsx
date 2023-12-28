@@ -10,6 +10,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useToasts } from 'react-toast-notifications';
 
 const initialState = {
   title: '',
@@ -29,7 +30,7 @@ const ProductUpdate = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [authors, setAuthors] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const { addToast } = useToasts();
   const { user } = useSelector((state) => ({ ...state }));
   const navigate = useNavigate();
   // router
@@ -63,9 +64,23 @@ const ProductUpdate = () => {
     getAuthors().then((c) => {
       setAuthors(c.data);
     });
-
+  const checkHasEmptyProp = (obj) => {
+    for (var key in obj) {
+      if (obj[key] === '') {
+        return true;
+      }
+    }
+    return false;
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (checkHasEmptyProp(values)) {
+      addToast(`Vui lòng điền đầy đủ thông tin!`, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      return;
+    }
     setLoading(true);
 
     values.category = selectedCategory ? selectedCategory : values.category;
@@ -73,13 +88,19 @@ const ProductUpdate = () => {
     updateProduct(slug, values, user.token)
       .then((res) => {
         setLoading(false);
-        toast.success(`"${res.data.title}" is updated`);
+        addToast(`Cập nhật sản phẩm thành công!`, {
+          appearance: 'success',
+          autoDismiss: true,
+        });
         navigate('/admin/products');
       })
       .catch((err) => {
         console.log(err);
         setLoading(false);
-        toast.error(err.response.data.err);
+        addToast(`Có lỗi xảy ra khi cập nhật sản phẩm!`, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
       });
   };
 

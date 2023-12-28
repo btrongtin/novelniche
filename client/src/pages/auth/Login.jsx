@@ -6,8 +6,7 @@ import { MailOutlined, GoogleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { createOrUpdateUser } from '../../functions/auth';
-import Tab from 'react-bootstrap/Tab';
-import Nav from 'react-bootstrap/Nav';
+import { useToasts } from 'react-toast-notifications';
 
 const Login = () => {
   const auth = getAuth();
@@ -15,6 +14,7 @@ const Login = () => {
   const [password, setPassword] = useState('gggggg');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { addToast } = useToasts();
 
   const { user } = useSelector((state) => ({ ...state }));
   useEffect(() => {
@@ -31,19 +31,13 @@ const Login = () => {
   let dispatch = useDispatch();
 
   //TO REDIRECT USER BACK TO WHERE THEY REQUEST
-  // const roleBasedRedirect = (res) => {
-  //   // check if intended
-  //   let intended = history.location.state;
-  //   if (intended) {
-  //     history.push(intended.from);
-  //   } else {
-  //     if (res.data.role === "admin") {
-  //       history.push("/admin/dashboard");
-  //     } else {
-  //       history.push("/user/history");
-  //     }
-  //   }
-  // };
+  const roleBasedRedirect = (res) => {
+    if (res.data.user.role === 'admin' || res.data.user.role === 'clerk') {
+      navigate('/admin/dashboard');
+    } else {
+      navigate('/');
+    }
+  };
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -60,11 +54,11 @@ const Login = () => {
   //         dispatch({
   //           type: "LOGGED_IN_USER",
   //           payload: {
-  //             name: res.data.name,
-  //             email: res.data.email,
+  //             name: res.data.user.name,
+  //             email: res.data.user.email,
   //             token: idTokenResult.token,
-  //             role: res.data.role,
-  //             _id: res.data._id,
+  //             role: res.data.user.role,
+  //             _id: res.data.user._id,
   //           },
   //         });
   //         roleBasedRedirect(res);
@@ -90,21 +84,30 @@ const Login = () => {
             dispatch({
               type: 'LOGGED_IN_USER',
               payload: {
-                name: res.data.name,
-                email: res.data.email,
+                name: res.data.user.name,
+                email: res.data.user.email,
                 token: idTokenResult.token,
-                role: res.data.role,
-                _id: res.data._id,
+                role: res.data.user.role,
+                _id: res.data.user._id,
+                state: res.data.user.state,
               },
             });
-            // roleBasedRedirect(res);
+            if (res.data.success) {
+              roleBasedRedirect(res);
+            } else {
+              addToast(
+                'Tài khoản của bạn đang bị vô hiệu hóa. Bạn sẽ không thể thực hiện một số hành động. Vui lòng liên hệ quản trị viên để biết thêm chi tiết.',
+                {
+                  appearance: 'error',
+                  autoDismiss: false,
+                }
+              );
+            }
           })
           .catch((err) => console.log(err));
-        // history.push("/");
       })
       .catch((err) => {
         console.log(err);
-        toast.error(err.message);
       });
   };
 
@@ -178,33 +181,33 @@ const Login = () => {
                       fontSize: '16px',
                     }}
                   >
-                    Hoặc
+                    {/* Hoặc */}
                   </p>
-                  <br />
-                  <div className="login-register-form">
-                    <form>
-                      <input type="text" name="user-name" placeholder="email" />
-                      <input
-                        type="password"
-                        name="user-password"
-                        placeholder="mật khẩu"
-                      />
-                      <div className="button-box mb-3">
-                        <div className="login-toggle-btn">
-                          <input type="checkbox" />
-                          <label className="ml-10">Ghi nhớ</label>
-                          <Link to="/forgot/password">Quên mật khẩu?</Link>
+                  {/* <br />
+                    <div className="login-register-form">
+                      <form>
+                        <input type="text" name="user-name" placeholder="email" />
+                        <input
+                          type="password"
+                          name="user-password"
+                          placeholder="mật khẩu"
+                        />
+                        <div className="button-box mb-3">
+                          <div className="login-toggle-btn">
+                            <input type="checkbox" />
+                            <label className="ml-10">Ghi nhớ</label>
+                            <Link to="/forgot/password">Quên mật khẩu?</Link>
+                          </div>
+                          <button type="submit" className="w-100">
+                            <span>Đăng nhập</span>
+                          </button>
                         </div>
-                        <button type="submit" className="w-100">
-                          <span>Đăng nhập</span>
-                        </button>
-                      </div>
-                      <p className="text-right">
-                        Chưa có tài khoản?{' '}
-                        <Link to="/register">Đăng ký ngay</Link>
-                      </p>
-                    </form>
-                  </div>
+                        <p className="text-right">
+                          Chưa có tài khoản?{' '}
+                          <Link to="/register">Đăng ký ngay</Link>
+                        </p>
+                      </form>
+                    </div> */}
                 </div>
               </div>
             </div>

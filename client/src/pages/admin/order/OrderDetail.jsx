@@ -66,14 +66,11 @@ const OrderPage = () => {
                   </div>
                   <div className="form-group">
                     <label className="font-weight-bold">Địa chỉ</label>
-                    <p
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          order.address ||
-                          order.orderedBy?.address ||
-                          '96 Le Hong Phong',
-                      }}
-                    ></p>
+                    <p>{order.address || ''}</p>
+                  </div>
+                  <div className="form-group">
+                    <label className="font-weight-bold">Số điện thoại</label>
+                    <p>{order.phone || ''}</p>
                   </div>
                 </form>
               </div>
@@ -108,6 +105,10 @@ const OrderPage = () => {
                       Loại hình thanh toán
                     </label>
                     <p>{order.paymentIntent?.payment_method_types[0] || ''}</p>
+                  </div>
+                  <div className="form-group">
+                    <label className="font-weight-bold">Tên người nhận</label>
+                    <p>{order.recipientName || ''}</p>
                   </div>
                 </form>
               </div>
@@ -164,10 +165,12 @@ const OrderPage = () => {
             <div className="d-flex align-item-center justify-content-between">
               <span className="font-weight-bold">Tổng tiền</span>
               <span>
-                {order.products?.reduce(
-                  (accumulator, product) =>
-                    accumulator + product.product.price * product.count,
-                  0
+                {numberWithCommas(
+                  order.products?.reduce(
+                    (accumulator, product) =>
+                      accumulator + product.product.price * product.count,
+                    0
+                  ) || 0
                 )}{' '}
                 VND
               </span>

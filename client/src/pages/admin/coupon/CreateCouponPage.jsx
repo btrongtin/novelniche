@@ -62,6 +62,7 @@ const CreateCouponPage = () => {
         appearance: 'error',
         autoDismiss: true,
       });
+      setLoading(false);
       return;
     }
     console.log('COUPON: ', {

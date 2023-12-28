@@ -13,6 +13,6 @@ router.post('/author', authCheck, [adminCheck(CLERK_WEIGHT)], create);
 router.get('/authors', list);
 router.get('/author/:slug', read);
 router.put('/author/:slug', authCheck, [adminCheck(CLERK_WEIGHT)], update);
-router.delete('/author/:slug', authCheck, [adminCheck(CLERK_WEIGHT)], remove);
+router.delete('/author/:slug', authCheck, [adminCheck(ADMIN_WEIGHT)], remove);
 
 module.exports = router;

@@ -40,9 +40,9 @@ const IconGroup = ({ iconWhiteClass }) => {
       className={`header-right-wrap ${iconWhiteClass ? iconWhiteClass : ''}`}
     >
       <div className="same-style header-search d-none d-lg-block">
-        <button className="search-active" onClick={(e) => handleClick(e)}>
+        {/* <button className="search-active" onClick={(e) => handleClick(e)}>
           <i className="pe-7s-search" />
-        </button>
+        </button> */}
         <div className="search-content">
           <form action="#">
             <input type="text" placeholder="Search" />
@@ -65,9 +65,9 @@ const IconGroup = ({ iconWhiteClass }) => {
               <li>
                 <Link to={'/login'}>Đăng nhập</Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to={'/register'}>Đăng ký</Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

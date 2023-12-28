@@ -7,6 +7,7 @@ import ProductDistributionPieChart from '../../../components/dashboard/ProductDi
 import StoreIncomeLineChart from '../../../components/dashboard/StoreIncomeLineChart';
 import LoadingCard from '../../../components/cards/LoadingCard';
 import TopCardHolder from '../../../components/dashboard/TopCardHolder';
+import { numberWithCommas } from '../../../utils';
 
 const AdminDashboard = () => {
   const [dashboardData, setDashboardData] = useState({});
@@ -40,7 +41,7 @@ const AdminDashboard = () => {
             </div>
             <div className="col-md-6 col-lg-6">
               <div className="card shadow h-100">
-                <div className="card-header">Top Selling Products</div>
+                <div className="card-header">Sản phẩm bán chạy</div>
                 <div className="card-body row">
                   {dashboardData.topSellingProductData &&
                     dashboardData.topSellingProductData.map((product) => (
@@ -67,7 +68,7 @@ const AdminDashboard = () => {
                             </div>
                           </div>
                           <div className="col-md-2 col-lg-2">
-                            <b>{product.price} VND</b>
+                            <b>{numberWithCommas(product.price || 0)} VND</b>
                           </div>
                         </div>
                       </div>
@@ -80,7 +81,7 @@ const AdminDashboard = () => {
           <div className="row mb-5">
             <div className="col-lg-4 col-md-4">
               <div className="card shadow h-100">
-                <div className="card-header">Top Order Users</div>
+                <div className="card-header">Khách hàng thân thiết</div>
                 <div className="card-body">
                   {dashboardData.topOrderUserData &&
                     dashboardData.topOrderUserData.map((user) => (
@@ -101,12 +102,9 @@ const AdminDashboard = () => {
                               {user.name}
                             </span>
 
-                            <span
-                              className="text-secondary"
-                              dangerouslySetInnerHTML={{
-                                __html: user.address || '98 Le Hong Phong',
-                              }}
-                            ></span>
+                            <span className="text-secondary">
+                              {user.email || ''}
+                            </span>
                           </div>
                         </div>
                         <div className="col-md-3 col-lg-3">
@@ -121,7 +119,7 @@ const AdminDashboard = () => {
             </div>
             <div className="col-lg-4 col-md-4">
               <div className="card shadow h-100">
-                <div className="card-header">Recent Products</div>
+                <div className="card-header">Sản phẩm gần đây</div>
                 {dashboardData.recentProduct && (
                   <div className="card-body">
                     <h5 className="card-title">

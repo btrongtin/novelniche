@@ -13,6 +13,8 @@ const {
   getDashboard,
   ordersCount,
   changeRole,
+  changeState,
+  searchUser,
 } = require('../controllers/admin');
 const { ADMIN_WEIGHT, CLERK_WEIGHT } = require('../utils/const');
 
@@ -45,8 +47,20 @@ router.put(
 router.put(
   '/admin/changeRole',
   authCheck,
-  [adminCheck(CLERK_WEIGHT)], //update this to ADMIN_WEIGHT
+  [adminCheck(ADMIN_WEIGHT)],
   changeRole
+);
+router.put(
+  '/admin/changeState',
+  authCheck,
+  [adminCheck(ADMIN_WEIGHT)],
+  changeState
+);
+router.post(
+  '/admin/searchUser',
+  authCheck,
+  [adminCheck(CLERK_WEIGHT)],
+  searchUser
 );
 
 module.exports = router;

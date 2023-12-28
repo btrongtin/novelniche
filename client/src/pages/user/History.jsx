@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import Invoice from '../../components/order/Invoice';
 import { numberWithCommas } from '../../utils';
+import moment from 'moment';
 
 const History = () => {
   const [orders, setOrders] = useState([]);
@@ -27,7 +28,12 @@ const History = () => {
             Mã đơn hàng: <b>{order._id}</b>
           </span>
           <br />
-          <span className="order-time">Ngày đặt: 20/02/2023</span>
+          <span className="order-time">
+            Ngày đặt:{' '}
+            {order.createdAt
+              ? moment(order.createdAt).format('DD/MM/YYYY - h:mm:ss a')
+              : ''}
+          </span>
         </div>
 
         <span className="order-status badge badge-success p-2">
@@ -50,9 +56,9 @@ const History = () => {
               <td>
                 <b>{p.product?.title || 'Sample book'}</b>
               </td>
-              <td>{numberWithCommas(p.product?.price) || '250.000'}</td>
+              <td>{numberWithCommas(p.product?.price || 0)}</td>
               <td>{p.count}</td>
-              <td>{numberWithCommas(p.count * p.product?.price)}</td>
+              <td>{numberWithCommas(p.count * (p.product?.price || 0))}</td>
             </tr>
           ))}
         </tbody>
@@ -95,9 +101,9 @@ const History = () => {
         <h5>Thông tin giao hàng</h5>
         <div className="shipping-info">
           <ul style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
-            <li>Người nhận: Bùi Trọng Tín</li>
-            <li>Địa chỉ: 96 Lê hồng phong, phú lợi, tdm, bình dương</li>
-            <li>Số điện thoại: 0828582484</li>
+            <li>Người nhận: {order.recipientName || ''}</li>
+            <li>Địa chỉ: {order.address || ''}</li>
+            <li>Số điện thoại: {order.phone || ''}</li>
           </ul>
         </div>
       </div>
